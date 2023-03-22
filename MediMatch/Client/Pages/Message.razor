@@ -1,0 +1,40 @@
+﻿@page "/Message"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using MediMatch.Shared
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>Message</PageTitle>
+
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="chat-box">
+                    <ul class="list-group">
+                        <!-- Messages will be displayed here -->
+                        <h3>Message</h3>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="filter">Filter messages:</label>
+                    <input type="text" class="form-control" id="filter" placeholder="Type to filter messages" />
+                </div>
+                <div class="form-group">
+                    <label for="newMessage">New message:</label>
+                    <textarea class="form-control" id="newMessage" rows="3"></textarea>
+                </div>
+                <button class="btn btn-primary">Send Message</button>
+            </div>
+        </div>
+    </div>
+    </body>
+
+@code {
+    
+
+}
