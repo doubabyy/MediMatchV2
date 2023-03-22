@@ -2,7 +2,7 @@
 {
     public class Bill
     {
-        public int Bill_num  { get; set; }
+        public int Bill_Id { get; set; }
         public string Bill_details { get; set; } 
         DateTime Date_received  { get; set; }
         public string cardNum { get; set; }
