@@ -17,35 +17,34 @@ namespace MediMatch.Server.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MessageTxt = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MessageDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MessageFromID = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MessageToID = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ApplicationUserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    MessageFromID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MessageToID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                  
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Messages", x => x.MessageId);
                     table.ForeignKey(
-                        name: "FK_Messages_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
+                        name: "FK_Messages_AspNetUsers_MessageFromID",
+                        column: x => x.MessageFromID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Messages_AspNetUsers_ApplicationUserId1",
-                        column: x => x.ApplicationUserId1,
+                        name: "FK_Messages_AspNetUsers_MessageFromToID",
+                        column: x => x.MessageToID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_ApplicationUserId",
+                name: "IX_Messages_MessageFromID",
                 table: "Messages",
-                column: "ApplicationUserId");
+                column: "MessageFromID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_ApplicationUserId1",
+                name: "IX_Messages_MessageToID",
                 table: "Messages",
-                column: "ApplicationUserId1");
+                column: "MessageToID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
