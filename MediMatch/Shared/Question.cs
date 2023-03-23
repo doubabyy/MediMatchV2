@@ -1,10 +1,10 @@
-﻿namespace MediMatch.Server.Models
+﻿namespace MediMatch.Shared
 {
     public class Question
     {
         public int QuestionId { get; set;}
-        public string QuestionAsked { get; set;}
-        public string QuestionTypeId { get; set;}
+        public string QuestionAsked { get; set; } = null!;
+        public int QuestionTypeId { get; set; } 
 
     }
 }

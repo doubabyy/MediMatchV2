@@ -1,7 +1,7 @@
 ﻿@page "/Message"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using MediMatch.Shared
+using MediMatch.Shared;
 @attribute [Authorize]
 @inject HttpClient Http
 
@@ -15,7 +15,7 @@
                 <div class="chat-box">
                     <ul class="list-group">
                         <!-- Messages will be displayed here -->
-                        <h3>Message</h3>
+                        <li>Message</li>
                     </ul>
                 </div>
             </div>

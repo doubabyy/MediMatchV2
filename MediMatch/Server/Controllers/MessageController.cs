@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using MediMatch.Server.Data;
+using MediMatch.Shared;
 
 namespace MediMatch.Server.Controllers
 {
