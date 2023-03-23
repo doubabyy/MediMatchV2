@@ -71,15 +71,15 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            [Required]
-            [Display(Name = "First Name")]
+            [Required(ErrorMessage = "Required Field")]
+            [Display(Name = "First Name*")]
             public string FirstName { get; set; }
 
             [Display(Name = "Middle Initial")]
             public string MiddleInitial { get; set; }
 
-            [Required]
-            [Display(Name = "Last Name")]
+            [Required(ErrorMessage = "Required Field")]
+            [Display(Name = "Last Name*")]
             public string LastName { get; set; }
 
             [Display(Name = "Suffix")]
@@ -88,24 +88,22 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [Display(Name = "DOB")]
+            [Required(ErrorMessage = "Required Field")]
+            [Display(Name = "DOB*")]
             public DateTime DOB { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Required Field")]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = "Email*")]
             public string Email { get; set; }
 
-            [Required]
-            [Display(Name = "Address")]
+            [Required(ErrorMessage = "Required Field")]
+            [Display(Name = "Address*")]
             public string Address { get; set; }
 
-            [Required]
-            [Display(Name = "Are you a doctor or patient? Enter D/P")]
+            [Required(ErrorMessage = "Required Field")]
+            [Display(Name = "Are you a doctor or patient? Enter D/P*")]
             public string UserType { get; set; }
-
-
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -114,7 +112,7 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Password*")]
             public string Password { get; set; }
 
             /// <summary>
@@ -122,7 +120,7 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
+            [Display(Name = "Confirm password*")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }
@@ -144,6 +142,15 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.FirstName = Input.FirstName;
+                user.MiddleInitial = Input.MiddleInitial;
+                user.LastName = Input.LastName;
+                user.Suffix = Input.Suffix;
+                user.DOB = Input.DOB;
+                user.Address = Input.Address;
+                user.UserType = Input.UserType;
+
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
