@@ -1,28 +1,79 @@
 ﻿@page "/Message"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-using MediMatch.Shared;
 @attribute [Authorize]
 @inject HttpClient Http
 
 <PageTitle>Message</PageTitle>
 
  <!-- Add a table on left hand side to show all chats above the table there should be a create new message button left hand side is the chat box itself with the conversation between two users  -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .    .chat-box {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .tight-spacing {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .tight-spacing-below {
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+    </style>
+</head>
 <body>
     <div class="container">
         <div class="row">
+            <div class="col-md-4">
+                 <h2 class="tight-spacing">Past Chats</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Last Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Add past chats with different users here -->
+                        <tr>
+                            <td>User1</td>
+                            <td>Hello, how are you?</td>
+                        </tr>
+                        <tr>
+                            <td>User2</td>
+                            <td>Goodbye!</td>
+                        </tr>
+                        <tr>
+                            <td>User3</td>
+                            <td>Hope your well</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <div class="col-md-8">
+              <h1 class="tight-spacing-below">Chat Page</h1>
                 <div class="chat-box">
                     <ul class="list-group">
                         <!-- Messages will be displayed here -->
-                        <li>Message</li>
-                    </ul>
+                   </ul>
                 </div>
-            </div>
-            <div class="col-md-8">
                 <div class="form-group">
-                    <label for="filter">Filter messages:</label>
-                    <input type="text" class="form-control" id="filter" placeholder="Type to filter messages" />
+                    <label for="filter"> Select User:</label>
+                    <input type="text" class="form-control" id="filter" placeholder="Search User Recieving Message" />
+                    <button class="btn btn-primary"> Add user</button>
                 </div>
                 <div class="form-group">
                     <label for="newMessage">New message:</label>
@@ -32,7 +83,10 @@ using MediMatch.Shared;
             </div>
         </div>
     </div>
-    </body>
+
+    
+</body>
+
 
 @code {
     
