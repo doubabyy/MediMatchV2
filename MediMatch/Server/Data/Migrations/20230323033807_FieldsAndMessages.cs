@@ -13,8 +13,7 @@ namespace MediMatch.Server.Data.Migrations
                 name: "Address",
                 table: "AspNetUsers",
                 type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+                nullable: true);
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "DOB",
