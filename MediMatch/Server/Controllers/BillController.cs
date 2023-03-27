@@ -21,15 +21,13 @@ namespace MediMatch.Server.Controllers
 
         [HttpGet]
         [Route("api/GetBills")]
-        public async Task<ActionResult<List<Message>>> GetBills()
+        public async Task<ActionResult<List<Bill>>> GetBills()
         {
             var bills = await (from u in _context.Users
                                join b in _context.Bills on u.Id equals b.UserId
                                where u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)
                                select
-                               b
-
-                                  ).ToListAsync();
+                               b).ToListAsync();
             return Ok(bills);
         }
     }

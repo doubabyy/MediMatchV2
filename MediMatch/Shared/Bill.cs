@@ -6,7 +6,7 @@ namespace MediMatch.Server.Models
     {
         [Key]
         public int Bill_Id { get; set; }
-        public string Bill_details { get; set; } 
+        public string Bill_details { get; set; } = null!;
         DateTime Date_received  { get; set; }
         public string cardNum { get; set; }
         public string paymentType { get; set; }

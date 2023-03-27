@@ -1,0 +1,68 @@
+﻿@page "/Questionnaire"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@inject HttpClient Http
+
+<h3>Questionaire</h3>
+
+
+  <head>
+    <title>Mental Health Questionnaire</title>
+  </head>
+  <body>
+    <h1>Mental Health Questionnaire</h1>
+    <form>
+      <h2>General Information</h2>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name"><br><br>
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age"><br><br>
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select><br><br>
+      
+      <h2>Mental Health Questions</h2>
+      <p>Please answer the following questions honestly and to the best of your ability.</p>
+      
+      <label for="question1">Have you ever talked to a psychiatrist, psychologist, therapist, social worker, or counselor 
+       about an emotional problem?</label>
+      <input type="radio" id="question1" name="question1" value="yes">
+      <label for="yes">Yes</label>
+      <input type="radio" id="question1" name="question1" value="no">
+      <label for="no">No</label><br><br>
+      
+      <label for="question2">Have you ever felt you needed help with your emotional problems, or have you had 
+       people tell you that you should get help for your emotional problems?</label>
+      <input type="radio" id="question2" name="question2" value="yes">
+      <label for="yes">Yes</label>
+      <input type="radio" id="question2" name="question2" value="no">
+      <label for="no">No</label><br><br>
+      
+      <label for="question3"> Have you ever been depressed for weeks at a time, lost interest or pleasure in most 
+       activities, had trouble concentrating and making decisions, or thought about killing Yes No 
+       yourself? </label>
+      <input type="radio" id="question3" name="question3" value="yes">
+      <label for="yes">Yes</label>
+      <input type="radio" id="question3" name="question3" value="no">
+      <label for="no">No</label><br><br>
+      
+      <h2>Additional Information</h2>
+      <label for="comments">Comments:</label><br>
+      <textarea id="comments" name="comments" rows="4" cols="50"></textarea><br><br>
+      
+      <input type="submit" value="Submit">
+      <input type="reset" value="Reset">
+    </form>
+  </body>
+
+
+@code {
+
+}
+@code {
+
+}
