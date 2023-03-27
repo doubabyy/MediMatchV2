@@ -13,8 +13,5 @@ namespace MediMatch.Server.Models
         public string UserType { get; set; } = null!;
         public List<Message> MessageTo { get; set; } = null!;
         public List<Message> MessageFrom { get; set; } = null!;
-
-
-
     }
 }

@@ -14,5 +14,6 @@ namespace MediMatch.Server.Data
         {
         }
         public DbSet<Message> Messages => Set<Message>();
+        public DbSet<Bill> Bills => Set<Bill>();
     }
 }
