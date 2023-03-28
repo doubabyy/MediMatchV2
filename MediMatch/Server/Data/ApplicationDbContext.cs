@@ -14,8 +14,47 @@ namespace MediMatch.Server.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
-        public DbSet<Message> Messages => Set<Message>();
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Doctor>().ToTable("Doctor");
+            builder.Entity<Doctor>(e =>
+            {
+                e.HasKey(d => d.ApplicationUserId);
+                e.Property(d => d.Description).IsRequired(true).HasColumnType<string>("nvarchar(400)");
+                e.Property(d => d.Availability).IsRequired(true).HasColumnType<string>("nvarchar(400)");
+                e.Property(d => d.Rates).IsRequired(true).HasColumnType<int>("int");
+                e.Property(d => d.AcceptsInsurance).IsRequired(true).HasColumnType<bool>("nvarchar(3)");
+            });
+            builder.Entity<Doctor>()
+                .HasOne(e => e.ApplicationUser)
+                .WithOne(p => p.Doctor)
+                .HasForeignKey<Doctor>(e => e.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            builder.Entity<Patient>().ToTable("Patient");
+            builder.Entity<Patient>(e =>
+            {
+                e.HasKey(d => d.ApplicationUserId);
+                e.Property(d => d.Age).IsRequired(true).HasColumnType<string>("nvarchar(50)");
+                e.Property(d => d.Gender).IsRequired(true).HasColumnType<string>("nvarchar(50)");
+                e.Property(d => d.Description).IsRequired(true).HasColumnType<string>("nvarchar(400)");
+            });
+            builder.Entity<Patient>()
+                .HasOne(e => e.ApplicationUser)
+                .WithOne(p => p.Patient)
+                .HasForeignKey<Patient>(e => e.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
+        //public DbSet<Message> Messages => Set<Message>();
         public DbSet<Bill> Bills => Set<Bill>();
-          
+        public Doctor Doctor { get; set; }
+
+        public Patient Patient { get; set; }
+
+
     }
 }

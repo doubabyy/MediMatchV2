@@ -1,5 +1,6 @@
 ﻿using MediMatch.Server.Data;
 using MediMatch.Server.Models;
+using MediMatch.Shared;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

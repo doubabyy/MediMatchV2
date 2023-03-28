@@ -4,6 +4,7 @@ using MediMatch.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediMatch.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230328180116_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,8 +283,7 @@ namespace MediMatch.Server.Data.Migrations
                     b.ToTable("Bills");
                 });
 
-            modelBuilder.Entity("MediMatch.Server.Models.Message", b =>
-            modelBuilder.Entity("MediMatch.Shared.Message", b =>
+            modelBuilder.Entity("MediMatch.Shared.Doctor", b =>
                 {
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
@@ -326,8 +327,8 @@ namespace MediMatch.Server.Data.Migrations
 
                     b.HasKey("ApplicationUserId");
 
-                    b.ToTable("Messages");
-                }));
+                    b.ToTable("Patient", (string)null);
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {

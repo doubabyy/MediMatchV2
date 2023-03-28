@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MediMatch.Server.Models
+namespace MediMatch.Shared
 {
     public class Bill
     {

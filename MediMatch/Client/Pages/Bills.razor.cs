@@ -1,4 +1,4 @@
-﻿using MediMatch.Server.Models;
+﻿using MediMatch.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Json;

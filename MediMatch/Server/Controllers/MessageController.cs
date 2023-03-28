@@ -9,6 +9,7 @@ using MediMatch.Shared;
 
 namespace MediMatch.Server.Controllers
 {
+    /*
       
     public class MessageController : Controller
     {
@@ -34,5 +35,9 @@ namespace MediMatch.Server.Controllers
                                   ).ToListAsync();
             return Ok(messages);
         }
+
     }
+
+    */
+    
 }
