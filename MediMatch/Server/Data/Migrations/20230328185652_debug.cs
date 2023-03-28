@@ -4,7 +4,7 @@
 
 namespace MediMatch.Server.Data.Migrations
 {
-    public partial class FixedFolder : Migration
+    public partial class debug : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

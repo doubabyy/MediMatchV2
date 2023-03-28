@@ -4,7 +4,7 @@
 
 namespace MediMatch.Server.Data.Migrations
 {
-    public partial class updatebill : Migration
+    public partial class first : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

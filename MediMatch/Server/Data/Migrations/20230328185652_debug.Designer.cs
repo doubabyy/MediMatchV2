@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediMatch.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230328183019_FixedFolder")]
-    partial class FixedFolder
+    [Migration("20230328185652_debug")]
+    partial class debug
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -276,35 +276,6 @@ namespace MediMatch.Server.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("MediMatch.Server.Models.Bill", b =>
-                {
-                    b.Property<int>("Bill_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Bill_Id"), 1L, 1);
-
-                    b.Property<string>("Bill_details")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("cardNum")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("paymentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Bill_Id");
-
-                    b.ToTable("Bills");
-                });
-
             modelBuilder.Entity("MediMatch.Server.Patient", b =>
                 {
                     b.Property<string>("ApplicationUserId")
@@ -325,6 +296,38 @@ namespace MediMatch.Server.Data.Migrations
                     b.HasKey("ApplicationUserId");
 
                     b.ToTable("Patient", (string)null);
+                });
+
+            modelBuilder.Entity("MediMatch.Shared.Bill", b =>
+                {
+                    b.Property<int>("Bill_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Bill_Id"), 1L, 1);
+
+                    b.Property<string>("Bill_details")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("cardNum")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("paymentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Bill_Id");
+
+                    b.ToTable("Bills");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

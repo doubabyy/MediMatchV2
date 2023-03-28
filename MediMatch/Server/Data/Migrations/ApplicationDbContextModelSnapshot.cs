@@ -274,6 +274,28 @@ namespace MediMatch.Server.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MediMatch.Server.Patient", b =>
+                {
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Age")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ApplicationUserId");
+
+                    b.ToTable("Patient", (string)null);
+                });
+
             modelBuilder.Entity("MediMatch.Shared.Bill", b =>
                 {
                     b.Property<int>("Bill_Id")
@@ -304,28 +326,6 @@ namespace MediMatch.Server.Data.Migrations
                     b.HasKey("Bill_Id");
 
                     b.ToTable("Bills");
-                });
-
-            modelBuilder.Entity("MediMatch.Server.Patient", b =>
-                {
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Age")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(400)");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("ApplicationUserId");
-
-                    b.ToTable("Patient", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

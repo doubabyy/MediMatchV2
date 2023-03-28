@@ -4,7 +4,7 @@
 
 namespace MediMatch.Server.Data.Migrations
 {
-    public partial class user : Migration
+    public partial class w : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
