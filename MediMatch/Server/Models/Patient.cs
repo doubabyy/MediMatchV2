@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using MediMatch.Server.Models;
 
-namespace MediMatch.Shared
+namespace MediMatch.Server
 {
     public class Patient
     {
