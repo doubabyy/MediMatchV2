@@ -4,6 +4,7 @@ using MediMatch.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediMatch.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230323032242_add applicationuser")]
+    partial class addapplicationuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,9 +199,6 @@ namespace MediMatch.Server.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -288,7 +287,6 @@ namespace MediMatch.Server.Data.Migrations
                 });
 
             modelBuilder.Entity("MediMatch.Server.Models.Message", b =>
-            modelBuilder.Entity("MediMatch.Shared.Message", b =>
                 {
                     b.Property<int>("MessageId")
                         .ValueGeneratedOnAdd()
@@ -324,7 +322,7 @@ namespace MediMatch.Server.Data.Migrations
                     b.HasIndex("ApplicationUserId1");
 
                     b.ToTable("Messages");
-                }));
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -463,7 +461,7 @@ namespace MediMatch.Server.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MediMatch.Shared.Message", b =>
+            modelBuilder.Entity("MediMatch.Server.Models.Message", b =>
                 {
                     b.HasOne("MediMatch.Server.Models.ApplicationUser", null)
                         .WithMany("MessageFrom")
