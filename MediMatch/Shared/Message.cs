@@ -13,7 +13,7 @@ namespace MediMatch.Shared
         [ForeignKey("ApplicationUser")]
         public string MessageFromID { get; set; } = null!;
         
-        [ForeignKey("ApplicationUser")]
+       [ForeignKey("ApplicationUser")]
         public string MessageToID { get; set; } = null!;
     }
 }

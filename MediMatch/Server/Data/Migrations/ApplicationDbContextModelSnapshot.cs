@@ -172,7 +172,6 @@ namespace MediMatch.Server.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -190,11 +189,6 @@ namespace MediMatch.Server.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -207,7 +201,6 @@ namespace MediMatch.Server.Data.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("MiddleInitial")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
@@ -231,7 +224,6 @@ namespace MediMatch.Server.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Suffix")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -242,7 +234,6 @@ namespace MediMatch.Server.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("UserType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -270,6 +261,9 @@ namespace MediMatch.Server.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -287,7 +281,6 @@ namespace MediMatch.Server.Data.Migrations
                     b.ToTable("Bills");
                 });
 
-            modelBuilder.Entity("MediMatch.Server.Models.Message", b =>
             modelBuilder.Entity("MediMatch.Shared.Message", b =>
                 {
                     b.Property<int>("MessageId")
@@ -324,7 +317,7 @@ namespace MediMatch.Server.Data.Migrations
                     b.HasIndex("ApplicationUserId1");
 
                     b.ToTable("Messages");
-                }));
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {

@@ -5,7 +5,47 @@
 @attribute [Authorize]
 @inject HttpClient Http
 
-<h3>Bills</h3>
+<h3>Upcoming Payments</h3>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Bill ID</th>
+            <th scope="col">Doctor Name</th>
+            <th scope="col">Service</th>
+            <th scope="col">Date</th>
+            <th scope="col">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><input type="checkbox" /></td>
+            <td>1001</td>
+            <td>Dr. Smith</td>
+            <td>General Checkup</td>
+            <td>2023-03-20</td>
+            <td>$100</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" /></td>
+            <td>1002</td>
+            <td>Dr. Johnson</td>
+            <td>Dental Cleaning</td>
+            <td>2023-03-15</td>
+            <td>$80</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" /></td>
+            <td>1003</td>
+            <td>Dr. Mary Johnson</td>
+            <td>Eye Exam</td>
+            <td>2023-03-15</td>
+            <td>$80</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Past Payments</h3>
 
 <ul>
 
