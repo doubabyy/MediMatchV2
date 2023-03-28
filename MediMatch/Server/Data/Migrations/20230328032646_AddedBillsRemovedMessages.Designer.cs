@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediMatch.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230323033807_FieldsAndMessages")]
-    partial class FieldsAndMessages
+    [Migration("20230328032646_AddedBillsRemovedMessages")]
+    partial class AddedBillsRemovedMessages
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -191,11 +191,9 @@ namespace MediMatch.Server.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -205,7 +203,6 @@ namespace MediMatch.Server.Data.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("MiddleInitial")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
@@ -229,7 +226,6 @@ namespace MediMatch.Server.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Suffix")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -240,7 +236,6 @@ namespace MediMatch.Server.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("UserType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -256,42 +251,33 @@ namespace MediMatch.Server.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("MediMatch.Shared.Message", b =>
+            modelBuilder.Entity("MediMatch.Server.Models.Bill", b =>
                 {
-                    b.Property<int>("MessageId")
+                    b.Property<int>("Bill_Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Bill_Id"), 1L, 1);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ApplicationUserId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("MessageDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("MessageFromID")
+                    b.Property<string>("Bill_details")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MessageToID")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MessageTxt")
+                    b.Property<string>("cardNum")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("MessageId");
+                    b.Property<string>("paymentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasKey("Bill_Id");
 
-                    b.HasIndex("ApplicationUserId1");
-
-                    b.ToTable("Messages");
+                    b.ToTable("Bills");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -431,17 +417,6 @@ namespace MediMatch.Server.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MediMatch.Shared.Message", b =>
-                {
-                    b.HasOne("MediMatch.Server.Models.ApplicationUser", null)
-                        .WithMany("MessageFrom")
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("MediMatch.Server.Models.ApplicationUser", null)
-                        .WithMany("MessageTo")
-                        .HasForeignKey("ApplicationUserId1");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -491,13 +466,6 @@ namespace MediMatch.Server.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("MediMatch.Server.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("MessageFrom");
-
-                    b.Navigation("MessageTo");
                 });
 #pragma warning restore 612, 618
         }

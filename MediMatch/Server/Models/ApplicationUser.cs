@@ -12,7 +12,10 @@ namespace MediMatch.Server.Models
         public DateTime DOB { get; set; }
         public string? Address { get; set; } = null!;
         public string? UserType { get; set; } = null!;
-        public List<Message> MessageTo { get; set; } = null!;
-        public List<Message> MessageFrom { get; set; } = null!;
+        //public List<Message> MessageTo { get; set; } = null!;
+        //public List<Message> MessageFrom { get; set; } = null!;
+
+        public Doctor Doctor { get; set; }
+        public Patient Patient { get; set; }
     }
 }
