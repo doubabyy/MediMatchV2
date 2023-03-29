@@ -45,5 +45,22 @@ namespace MediMatch.Server.Controllers
                                b).ToListAsync();
             return Ok(bills);
         }
+
+        [HttpPost]
+        [Route("api/make-payment")]
+        public async Task<ActionResult> MakePayment([FromBody] Bill b)
+        {
+            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var myBill = await _context.Bills.FirstOrDefaultAsync(u => u.Bill_Id == b.Bill_Id);
+            if (myBill == null)
+            {
+                return NotFound();
+            }
+
+            myBill.Paid = true;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

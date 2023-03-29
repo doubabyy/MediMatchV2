@@ -7,44 +7,56 @@
 
 <h3>Upcoming Payments</h3>
 
-<ul>
 
-@foreach (var b in BillsUpcoming)
-{
-    @*<li><a href="#" @onclick="@(() => ShowMovieDetails(movie))"
-@onclick:preventDefault="true" style="text-decoration:none;color:black;">
-        @movie.Title (@movie.Year)<br />Actors (@movie.Actors)</a>
-        <button type="button" @onclick="(() => RemoveFavoriteMovie(movie))">
-            Delete
-        </button>
-    </li>*@
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Bill ID</th>
+            <th scope="col">Paid</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in BillsUpcoming)
+        {
+            <tr>
+                <td>@b.Bill_Id</td>
+                <td>@b.Paid</td>
+                <button @onclick="@(() => MakePayment(b))">Make Payment</button>
+            </tr>
+        }
+    </tbody>
+</table>
 
-    <li>@b.Bill_Id</li>
-}
-</ul>
+
+
 
 <h3>Past Payments</h3>
 
-<ul>
 
-@foreach (var b in BillsHist)
-{
-    @*<li><a href="#" @onclick="@(() => ShowMovieDetails(movie))"
-@onclick:preventDefault="true" style="text-decoration:none;color:black;">
-        @movie.Title (@movie.Year)<br />Actors (@movie.Actors)</a>
-        <button type="button" @onclick="(() => RemoveFavoriteMovie(movie))">
-            Delete
-        </button>
-    </li>*@
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Bill ID</th>
+            <th scope="col">Paid</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in BillsHist)
+        {
+            <tr>
+                <td>@b.Bill_Id</td>
+                <td>@b.Paid</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-    <li>@b.Bill_Id</li>
-}
    
-</ul>
 
        
 
-
+<h3>this is just a template that could be used later</h3>
 <table class="table table-striped table-bordered">
     <thead>
         <tr>

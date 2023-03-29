@@ -24,5 +24,11 @@ namespace MediMatch.Client.Pages
             }
 
         }
+
+        private async void MakePayment(Bill b)
+        {
+            var res = await Http.PostAsJsonAsync("api/make-payment", b);
+        }
+
     }
 }
