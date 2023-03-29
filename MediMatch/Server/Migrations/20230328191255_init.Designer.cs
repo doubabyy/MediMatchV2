@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace MediMatch.Server.Data.Migrations
+namespace MediMatch.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230328185839_first")]
-    partial class first
+    [Migration("20230328191255_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

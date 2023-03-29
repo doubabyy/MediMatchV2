@@ -6,50 +6,28 @@
 @inject HttpClient Http
 
 <h3>Upcoming Payments</h3>
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th scope="col"></th>
-            <th scope="col">Bill ID</th>
-            <th scope="col">Doctor Name</th>
-            <th scope="col">Service</th>
-            <th scope="col">Date</th>
-            <th scope="col">Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><input type="checkbox" /></td>
-            <td>1001</td>
-            <td>Dr. Smith</td>
-            <td>General Checkup</td>
-            <td>2023-03-20</td>
-            <td>$100</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" /></td>
-            <td>1002</td>
-            <td>Dr. Johnson</td>
-            <td>Dental Cleaning</td>
-            <td>2023-03-15</td>
-            <td>$80</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" /></td>
-            <td>1003</td>
-            <td>Dr. Mary Johnson</td>
-            <td>Eye Exam</td>
-            <td>2023-03-15</td>
-            <td>$80</td>
-        </tr>
-    </tbody>
-</table>
+
+<ul>
+
+@foreach (var b in BillsUpcoming)
+{
+    @*<li><a href="#" @onclick="@(() => ShowMovieDetails(movie))"
+@onclick:preventDefault="true" style="text-decoration:none;color:black;">
+        @movie.Title (@movie.Year)<br />Actors (@movie.Actors)</a>
+        <button type="button" @onclick="(() => RemoveFavoriteMovie(movie))">
+            Delete
+        </button>
+    </li>*@
+
+    <li>@b.Bill_Id</li>
+}
+</ul>
 
 <h3>Past Payments</h3>
 
 <ul>
 
-@foreach (var b in UserBills)
+@foreach (var b in BillsHist)
 {
     @*<li><a href="#" @onclick="@(() => ShowMovieDetails(movie))"
 @onclick:preventDefault="true" style="text-decoration:none;color:black;">
