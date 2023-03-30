@@ -53,6 +53,8 @@ namespace MediMatch.Server.Data
         public DbSet<Bill> Bills => Set<Bill>();
         public Doctor Doctor { get; set; }
 
+        public DbSet<Match> Matches => Set<Match>();
+
         public Patient Patient { get; set; }
 
 
