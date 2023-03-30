@@ -56,7 +56,7 @@ namespace MediMatch.Server.Data
         public DbSet<Match> Matches => Set<Match>();
 
         public Patient Patient { get; set; }
-
+        public DbSet<Request> Requests { get; set; }
 
     }
 }

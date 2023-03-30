@@ -1,5 +1,7 @@
 ﻿@page "/BrowseDoctors"
+@inject HttpClient Http
 @using System.ComponentModel.DataAnnotations
+@using MediMatch.Shared
 
 <style>
     h3 {
@@ -74,7 +76,23 @@
 
     private void SendRequest(Doctor selectedDoctor)
     {
-        
+
         Console.WriteLine($"Request sent to {selectedDoctor.Name}.");
     }
+    private async Task SendRequest(string doctorId)
+    {
+        var request = new Request
+    {
+        DoctorId = doctorId,
+        PatientId = "1", // Replace with the actual patient ID
+        RequestStatus = "Pending"
+    };
+
+        var response = await Http.PostAsJsonAsync("api/patient/send-request", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Request Has been sent successfully");
+        }
+}
 }
