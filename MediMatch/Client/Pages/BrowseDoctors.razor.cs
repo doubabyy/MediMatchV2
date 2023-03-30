@@ -22,8 +22,6 @@ namespace MediMatch.Client.Pages
         private async void SendRequest(string doc_id)
         {
             await Http.PostAsJsonAsync("api/send-request", doc_id);
-            //await InvokeAsync(() => StateHasChanged());
-            //StateHasChanged();
             Doctors = await Http.GetFromJsonAsync<List<DoctorDto>>("api/browse-doctors");
             StateHasChanged();
         }
