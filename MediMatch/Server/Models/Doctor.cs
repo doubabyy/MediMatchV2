@@ -17,7 +17,7 @@ namespace MediMatch.Server.Models
 
         public string Description { get; set; }
         public string Availability { get; set; }
-
+        public string Specialty { get; set; }
         public int Rates { get; set; }
         public bool AcceptsInsurance { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
