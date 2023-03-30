@@ -1,0 +1,38 @@
+﻿@page "/DoctorProfile"
+@layout PatientLayout
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+@using MediMatch.Shared
+
+
+<h3> Edit Doctor Profile </h3> 
+
+<EditForm Model="@DoctorDto" OnValidSubmit="NewInputs">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+    <div class="form-group">
+        <label for="DueDate">Specialty</label>
+        <InputText class="form-control" id="DueDate" @bind-Value="DoctorDto.Specialty" />
+    </div>
+    <div class="form-group">
+        <label for="Title">Description</label>
+        <InputTextArea class="form-control" id="Title" @bind-Value="DoctorDto.Description" />
+    </div>
+    <div class="form-group">
+        <label for="DueDate">Availability</label>
+        <InputText class="form-control" id="DueDate" @bind-Value="DoctorDto.Availability" />
+    </div>
+    <div class="form-group">
+        <label for="DueDate">Rate per hour</label>
+        <InputNumber class="form-control" id="DueDate" @bind-Value="DoctorDto.Rates" />
+    </div>
+    <div class="form-group">
+        <InputCheckbox class="form-check-input" id="Completed" @bind-Value="DoctorDto.AcceptsInsurance" />
+        <label for="Completed">Accepts Insurance</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>

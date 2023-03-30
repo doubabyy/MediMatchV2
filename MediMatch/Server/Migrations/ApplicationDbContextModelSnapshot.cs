@@ -249,7 +249,35 @@ namespace MediMatch.Server.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("MediMatch.Server.Patient", b =>
+            modelBuilder.Entity("MediMatch.Server.Models.Doctor", b =>
+                {
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("AcceptsInsurance")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Availability")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<int>("Rates")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Specialty")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ApplicationUserId");
+
+                    b.ToTable("Doctor", (string)null);
+                });
+
+            modelBuilder.Entity("MediMatch.Server.Models.Patient", b =>
                 {
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
@@ -301,53 +329,6 @@ namespace MediMatch.Server.Migrations
                     b.HasKey("Bill_Id");
 
                     b.ToTable("Bills");
-                });
-
-            modelBuilder.Entity("MediMatch.Server.Models.Doctor", b =>
-                {
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AcceptsInsurance")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(3)");
-
-                    b.Property<string>("Availability")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(400)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(400)");
-
-                    b.Property<int>("Rates")
-                        .HasColumnType("int");
-
-                    b.HasKey("ApplicationUserId");
-
-                    b.ToTable("Doctor", (string)null);
-                });
-
-            modelBuilder.Entity("MediMatch.Server.Models.Patient", b =>
-                {
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Age")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(400)");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("ApplicationUserId");
-
-                    b.ToTable("Patient", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
