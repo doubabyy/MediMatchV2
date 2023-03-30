@@ -1,0 +1,116 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
+<style>
+    .navbar {
+        background-color: #6fb98f;
+    }
+
+    .nav-link {
+        color: floralwhite;
+    }
+
+    .nav-link:hover {
+        color: #a0aec0;
+        text-decoration: none;
+    }
+
+    .sidebar {
+       background-image: linear-gradient(to bottom, steelblue, cadetblue);
+        height: 100vh;
+        width: 15%;
+        position: fixed;
+    }
+
+    .content {
+        margin-left: 15%;
+    }
+</style>
+
+
+ @*   <div class="container-fluid">
+        <a class="navbar-brand" href="">MediMatch</a>
+        <div class="navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="BrowseCounselors">
+                                Browse Counselors
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="authentication/profile">
+                                Account
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
+                        </li>
+                    </Authorized>
+                    <NotAuthorized>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="authentication/register">
+                                Register
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="authentication/login">
+                                Log in
+                            </NavLink>
+                        </li>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </ul>
+        </div>
+    </div>*@
+
+
+<div class="sidebar">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="Message">
+                <span class="oi oi-envelope-closed" aria-hidden="true"></span> Message
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="Payments">
+                <span class="oi oi-dollar" aria-hidden="true"></span> Payments
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="Appointments">
+                <span class="oi oi-calendar" aria-hidden="true"></span> Appointments
+            </NavLink>
+        </div>
+         <div class="nav-item px-3">
+            <NavLink class="nav-link" href="View Request">
+                <span class="oi oi-envelope-open" aria-hidden="true"></span> View Request
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private async Task BeginSignOut(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+}

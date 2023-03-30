@@ -1,0 +1,32 @@
+﻿@page "/BrowseDoctors"
+@using System.ComponentModel.DataAnnotations
+
+<h3>Browse Doctors</h3>
+
+@foreach (var doctor in doctors)
+{
+    <div class="doctor-card">
+        <h4>@doctor.Name</h4>
+        <p>Specialty: @doctor.Specialty</p>
+        <p>Rating: <span class="rating">@new string('⭐', doctor.Rating)</span></p>
+        <button @onclick="() => SendRequest(doctor)">Send Request</button>
+    </div>
+}
+
+@code {
+    public class Doctor
+    {
+        public string Name { get; set; }
+        public string Specialty { get; set; }
+        public int Rating { get; set; }
+    }
+
+    private List<Doctor> doctors = new List<Doctor>
+    {
+        new Doctor { Name = "Dr. Alice Smith", Specialty = "Depression", Rating = 4 },
+        new Doctor { Name = "Dr. Bob Johnson", Specialty = "Anxiety", Rating = 5 },
+        new Doctor { Name = "Dr. Charlie Brown", Specialty = "PTSD", Rating = 3 },
+        new Doctor { Name = "Dr. David Williams", Specialty = "OCD", Rating = 4 },
+        new Doctor { Name = "Dr. Emma Wilson", Specialty = "Bipolar Disorder", Rating = 4 },
+    };
+    }

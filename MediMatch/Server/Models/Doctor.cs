@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using MediMatch.Server.Models;
 
 
-namespace MediMatch.Server
+
+namespace MediMatch.Server.Models
 {
     public class Doctor
     {

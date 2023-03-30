@@ -1,0 +1,76 @@
+﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+<style>
+    .top-navbar{
+        background-image: linear-gradient(to right, mediumseagreen, cadetblue);
+        padding 10px 0;
+    }
+
+  .nav-link:has(:hover)nav-link{
+        color:#fffff;
+    }
+    .nav-linknav-link:hover{
+        color: #eaf9f0;
+        text-decoration: none;
+    }
+
+</style>
+<div class="page">
+    <div class="container-fluid top-navbar">
+        <div class="row align-items-center">
+            <div class="col">
+                <a class="navbar-brand" href="">MediMatch</a>
+            </div>
+            <div class="col-8"></div>
+            <AuthorizeView>
+                <Authorized>
+                    <div class="col px-2">
+                        <NavLink style="text-decoration:none;color:black" class="nav-link" href="authentication/profile">
+                            Account
+                        </NavLink>
+                    </div>
+                    <div class="col px-40">
+                        <button style="text-decoration:none;color:black" class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
+                    </div>
+                </Authorized>
+                <NotAuthorized>
+                    <div class="col">
+                        <NavLink style="text-decoration:none;color:black" class="nav-link" href="authentication/register">
+                            Register
+                        </NavLink>
+                    </div>
+                    <div class="col">
+                        <NavLink style="text-decoration:none;color:black" class="nav-link" href="authentication/login">
+                            Log in
+                        </NavLink>
+                    </div>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+    </div>
+    <main>
+        @* <div class="top-row px-12 auth">
+            <LoginDisplay />
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>*@
+
+        <div class="sidebar">
+        <PatientMenu />
+   </div>
+       
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+@code {
+     private async Task BeginSignOut(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+}
