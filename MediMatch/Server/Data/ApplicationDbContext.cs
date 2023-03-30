@@ -26,7 +26,7 @@ namespace MediMatch.Server.Data
                 e.Property(d => d.Description).IsRequired(true).HasColumnType<string>("nvarchar(400)");
                 e.Property(d => d.Availability).IsRequired(true).HasColumnType<string>("nvarchar(400)");
                 e.Property(d => d.Rates).IsRequired(true).HasColumnType<int>("int");
-                e.Property(d => d.AcceptsInsurance).IsRequired(true).HasColumnType<bool>("nvarchar(3)");
+                e.Property(d => d.AcceptsInsurance).IsRequired(true).HasColumnType<bool>("bit");
             });
             builder.Entity<Doctor>()
                 .HasOne(e => e.ApplicationUser)
@@ -52,6 +52,8 @@ namespace MediMatch.Server.Data
         //public DbSet<Message> Messages => Set<Message>();
         public DbSet<Bill> Bills => Set<Bill>();
         public Doctor Doctor { get; set; }
+
+        public DbSet<Match> Matches => Set<Match>();
 
         public Patient Patient { get; set; }
 
