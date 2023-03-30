@@ -8,7 +8,7 @@
     <div class="doctor-card">
         <h4>@doctor.Name</h4>
         <p>Specialty: @doctor.Specialty</p>
-        <p>Rating: <span class="rating">@new string('⭐', doctor.Rating)</span></p>
+<p>Rating: <span class="rating">@for (int i = 0; i < (int)Math.Round((double)doctor.Rating); i++) { <text>⭐</text> }</span></p>
         <button @onclick="() => SendRequest(doctor)">Send Request</button>
     </div>
 }
@@ -29,4 +29,10 @@
         new Doctor { Name = "Dr. David Williams", Specialty = "OCD", Rating = 4 },
         new Doctor { Name = "Dr. Emma Wilson", Specialty = "Bipolar Disorder", Rating = 4 },
     };
+
+    private void SendRequest(Doctor selectedDoctor)
+{
+    // Implement the logic to send a request to the selected doctor
+    Console.WriteLine($"Request sent to {selectedDoctor.Name}.");
+}
     }

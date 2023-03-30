@@ -5,8 +5,7 @@
         public int RequestID { get; set; }
         public string RequestType { get; set; } = null!;
         public string RequestStatus { get; set; } = null!;
-        // should there be two user IDs
-        public int UserId { get; set; }
-
+        public string PatientId { get; set; }
+        public string DoctorId { get; set; }
     }
 }
