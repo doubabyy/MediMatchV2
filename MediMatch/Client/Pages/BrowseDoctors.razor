@@ -1,5 +1,7 @@
 ﻿@page "/BrowseDoctors"
 @using System.ComponentModel.DataAnnotations
+@layout PatientLayout
+@inject HttpClient Http
 
 <style>
     h3 {
@@ -35,46 +37,20 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var doctor in doctors)
+        @foreach (var doctor in Doctors)
         {
             <tr>
-                <td>@doctor.Name</td>
-                <td>@doctor.Specialty</td>
-                <td>@doctor.Description</td>
-                <td><span class="rating">@for (int i = 0; i < (int)Math.Round((double)doctor.Rating); i++) { <text>⭐</text> }</span></td>
-                <td>@doctor.Availability</td>
-                <td>@doctor.Rates</td>
-                <td>@(doctor.AcceptsInsurance ? "Yes" : "No")</td>
-                <td><button @onclick="() => SendRequest(doctor)">Send Request</button></td>
+                <td>@doctor.FirstName @doctor.LastName</td>
+                <td>xxx</td>
+                <td>xxx</td>
+                @*<td><span class="rating">@for (int i = 0; i < (int)Math.Round((double)doctor.Rating); i++) { <text>⭐</text> }</span></td>*@
+                <td>5</td>
+                <td>xxx</td>
+                <td>xxx</td>
+                @*<td>@(doctor.AcceptsInsurance ? "Yes" : "No")</td>*@
+                <td><button @onclick="() => SendRequest(doctor.Id)">Send Request</button></td>
             </tr>
         }
     </tbody>
 </table>
 
-@code {
-    public class Doctor
-    {
-        public string Name { get; set; }
-        public string Specialty { get; set; }
-        public int Rating { get; set; }
-        public string Description { get; set; }
-        public string Availability { get; set; }
-        public string Rates { get; set; }
-        public bool AcceptsInsurance { get; set; }
-    }
-
-    private List<Doctor> doctors = new List<Doctor>
-    {
-        new Doctor { Name = "Dr. Alice Smith", Specialty = "Depression", Rating = 4, Description = "Dr. Alice Smith has over 10 years of experience in treating patients with depression.", Availability = "Mon - Fri, 9AM - 5PM", Rates = "$150", AcceptsInsurance = true },
-        new Doctor { Name = "Dr. Bob Johnson", Specialty = "Anxiety", Rating = 5, Description = "Dr. Bob Johnson specializes in anxiety disorders and has helped many patients overcome their fears.", Availability = "Mon, Wed, Fri, 10AM - 6PM", Rates = "$180", AcceptsInsurance = false },
-        new Doctor { Name = "Dr. Charlie Brown", Specialty = "PTSD", Rating = 3, Description = "Dr. Charlie Brown is a dedicated professional in the field of PTSD treatment and recovery.", Availability = "Tue, Thu, Sat, 11AM - 7PM", Rates = "$160", AcceptsInsurance = true },
-        new Doctor { Name = "Dr. David Williams", Specialty = "OCD", Rating = 4, Description = "Dr. David Williams has a deep understanding of OCD and has developed effective treatment plans for patients.", Availability = "Mon - Fri, 9AM - 5PM", Rates = "$170", AcceptsInsurance = false },
-        new Doctor { Name = "Dr. Emma Wilson", Specialty = "Bipolar Disorder", Rating = 4, Description = "Dr. Emma Wilson has a strong track record in treating patients with bipolar disorder.", Availability = "Mon - Fri, 8AM - 4PM", Rates = "$200", AcceptsInsurance = true },
-    };
-
-    private void SendRequest(Doctor selectedDoctor)
-    {
-        
-        Console.WriteLine($"Request sent to {selectedDoctor.Name}.");
-    }
-}

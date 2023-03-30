@@ -24,17 +24,6 @@ namespace MediMatch.Server.Controllers
         [Route("api/get-bills-history")]
         public async Task<ActionResult<List<Bill>>> GetBillsHistory()
         {
-            //var bills = await (from u in _context.Users
-            //                   join b in _context.Bills on u.Id equals b.PatientId
-            //                   where u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)
-            //                    && b.Paid == true
-            //                   select
-            //                   b).ToListAsync
-
-            //var bills =  await _context.Users
-            //                .Join(_context.Bills, p => p.Id, b => b.PatientId, (p, b) => new { p, b })
-            //                .Join(_context.Users, d => d.Id)
-
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var bills = await (from p in _context.Users
                                join b in _context.Bills on p.Id equals b.PatientId

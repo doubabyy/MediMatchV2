@@ -274,7 +274,7 @@ namespace MediMatch.Server.Migrations
 
                     b.HasKey("ApplicationUserId");
 
-                    b.ToTable("Doctor", (string)null);
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("MediMatch.Server.Models.Patient", b =>
@@ -296,7 +296,7 @@ namespace MediMatch.Server.Migrations
 
                     b.HasKey("ApplicationUserId");
 
-                    b.ToTable("Patient", (string)null);
+                    b.ToTable("Patients", (string)null);
                 });
 
             modelBuilder.Entity("MediMatch.Shared.Bill", b =>
@@ -342,6 +342,36 @@ namespace MediMatch.Server.Migrations
                     b.HasKey("Bill_Id");
 
                     b.ToTable("Bills");
+                });
+
+            modelBuilder.Entity("MediMatch.Shared.Match", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Accepted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("AcceptedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DoctorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RequestedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Matches");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

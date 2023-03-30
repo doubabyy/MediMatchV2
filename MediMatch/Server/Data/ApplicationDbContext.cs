@@ -19,7 +19,7 @@ namespace MediMatch.Server.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Doctor>().ToTable("Doctor");
+            builder.Entity<Doctor>().ToTable("Doctors");
             builder.Entity<Doctor>(e =>
             {
                 e.HasKey(d => d.ApplicationUserId);
@@ -35,7 +35,7 @@ namespace MediMatch.Server.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
 
-            builder.Entity<Patient>().ToTable("Patient");
+            builder.Entity<Patient>().ToTable("Patients");
             builder.Entity<Patient>(e =>
             {
                 e.HasKey(d => d.ApplicationUserId);
@@ -51,12 +51,8 @@ namespace MediMatch.Server.Data
         }
         //public DbSet<Message> Messages => Set<Message>();
         public DbSet<Bill> Bills => Set<Bill>();
-        public Doctor Doctor { get; set; }
-
+        public DbSet<Doctor> Doctors => Set<Doctor>();
         public DbSet<Match> Matches => Set<Match>();
-
-        public Patient Patient { get; set; }
-
-
+        public DbSet<Patient> Patients => Set<Patient>();
     }
 }

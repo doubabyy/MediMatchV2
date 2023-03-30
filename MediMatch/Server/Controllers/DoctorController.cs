@@ -60,7 +60,7 @@ namespace MediMatch.Server.Controllers
                     AcceptsInsurance = dto.AcceptsInsurance
                 };
                 user.Doctor = doctor;
-                _context.Doctor = doctor;
+                //_context.Doctors = doctor;
 
             }
                
