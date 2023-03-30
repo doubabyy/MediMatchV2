@@ -35,10 +35,13 @@ namespace MediMatch.Server.Controllers
             //                .Join(_context.Bills, p => p.Id, b => b.PatientId, (p, b) => new { p, b })
             //                .Join(_context.Users, d => d.Id)
 
+            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var bills = await (from p in _context.Users
                                join b in _context.Bills on p.Id equals b.PatientId
                                join d in _context.Users on b.DoctorId equals d.Id
                                where b.Paid == true
+                                && p.Id == user.Id
+                               orderby b.Date_received descending
                                select new BillDisplay
                                {
                                    Bill_Id = b.Bill_Id,
@@ -59,10 +62,13 @@ namespace MediMatch.Server.Controllers
         [Route("api/get-bills-upcoming")]
         public async Task<ActionResult<List<Bill>>> GetBillsUpcoming()
         {
+            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var bills = await (from p in _context.Users
                                join b in _context.Bills on p.Id equals b.PatientId
                                join d in _context.Users on b.DoctorId equals d.Id
                                where b.Paid == false
+                                    && p.Id == user.Id
+                               orderby b.DueDate descending
                                select new BillDisplay
                                {
                                    Bill_Id = b.Bill_Id,
