@@ -163,31 +163,6 @@ namespace MediMatch.Server.Migrations
                     b.ToTable("PersistedGrants", (string)null);
                 });
 
-            modelBuilder.Entity("MediMatch.Server.Doctor", b =>
-                {
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AcceptsInsurance")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(3)");
-
-                    b.Property<string>("Availability")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(400)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(400)");
-
-                    b.Property<int>("Rates")
-                        .HasColumnType("int");
-
-                    b.HasKey("ApplicationUserId");
-
-                    b.ToTable("Doctor", (string)null);
-                });
-
             modelBuilder.Entity("MediMatch.Server.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -328,6 +303,53 @@ namespace MediMatch.Server.Migrations
                     b.ToTable("Bills");
                 });
 
+            modelBuilder.Entity("MediMatch.Server.Models.Doctor", b =>
+                {
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AcceptsInsurance")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("Availability")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<int>("Rates")
+                        .HasColumnType("int");
+
+                    b.HasKey("ApplicationUserId");
+
+                    b.ToTable("Doctor", (string)null);
+                });
+
+            modelBuilder.Entity("MediMatch.Server.Models.Patient", b =>
+                {
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Age")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ApplicationUserId");
+
+                    b.ToTable("Patient", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -465,22 +487,22 @@ namespace MediMatch.Server.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MediMatch.Server.Doctor", b =>
+            modelBuilder.Entity("MediMatch.Server.Models.Doctor", b =>
                 {
                     b.HasOne("MediMatch.Server.Models.ApplicationUser", "ApplicationUser")
                         .WithOne("Doctor")
-                        .HasForeignKey("MediMatch.Server.Doctor", "ApplicationUserId")
+                        .HasForeignKey("MediMatch.Server.Models.Doctor", "ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("MediMatch.Server.Patient", b =>
+            modelBuilder.Entity("MediMatch.Server.Models.Patient", b =>
                 {
                     b.HasOne("MediMatch.Server.Models.ApplicationUser", "ApplicationUser")
                         .WithOne("Patient")
-                        .HasForeignKey("MediMatch.Server.Patient", "ApplicationUserId")
+                        .HasForeignKey("MediMatch.Server.Models.Patient", "ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

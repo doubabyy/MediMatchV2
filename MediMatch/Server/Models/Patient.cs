@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations;
 
 
 namespace MediMatch.Server.Models
-
 {
     public class Patient
     {

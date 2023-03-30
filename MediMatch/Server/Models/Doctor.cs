@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 
-
 namespace MediMatch.Server.Models
 {
     public class Doctor
