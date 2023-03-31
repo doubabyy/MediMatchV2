@@ -1,54 +1,66 @@
 ﻿using MediMatch.Server.Data;
 using MediMatch.Server.Models;
 using MediMatch.Shared;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MediMatch.Server.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class RequestController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public RequestController(ApplicationDbContext context)
+        public RequestController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: api/Request
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Request>>> GetRequests()
+        [Route("api/get-requests")]
+        public async Task<ActionResult<List<Match>>> GetRequests()
         {
-            return await _context.Requests.ToListAsync();
+            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var requests = await (from m in _context.Matches
+                                where m.DoctorId == user.Id
+                                    && m.Accepted == false
+                                orderby m.RequestedAt descending
+                                select m).ToListAsync();
+            return Ok(requests);
         }
 
         // POST: api/Request
         [HttpPost]
-        public async Task<ActionResult<Request>> PostRequest(Request request)
+        [Route("api/accept-request")]
+        public async Task<ActionResult> AcceptRequest([FromBody] int request_id)
         {
-            _context.Requests.Add(request);
+            var myRequest = await _context.Matches.FirstOrDefaultAsync(u => u.Id == request_id);
+            myRequest.Accepted = true;
+            myRequest.AcceptedAt = DateTime.Now;
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetRequest", new { id = request.RequestID }, request);
+            return Ok();
         }
 
         // GET: api/Request/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Request>> GetRequest(int id)
-        {
-            var request = await _context.Requests.FindAsync(id);
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Request>> GetRequest(int id)
+        //{
+        //    var request = await _context.Requests.FindAsync(id);
 
-            if (request == null)
-            {
-                return NotFound();
-            }
+        //    if (request == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return request;
-        }
+        //    return request;
+        //}
     }
 }
