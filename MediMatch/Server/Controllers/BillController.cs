@@ -43,7 +43,6 @@ namespace MediMatch.Server.Controllers
                                    DoctorName = d.FirstName,
                                    Paid = b.Paid 
                                }).ToListAsync();
-
             return Ok(bills);
         }
 

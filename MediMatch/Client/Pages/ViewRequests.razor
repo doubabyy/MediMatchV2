@@ -4,40 +4,27 @@
 @layout PatientLayout
 <h3>View Requests</h3>
 
-@if (requests == null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <table class="table">
-        <thead>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Patient Name</th>
+            <th>Patient ID</th>
+            <th>Doctor ID</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var request in Requests)
+        {
             <tr>
-                <th>Request ID</th>
-                <th>Patient ID</th>
-                <th>Doctor ID</th>
-                <th>Status</th>
+                <td>xxx</td>
+                <td>@request.PatientId</td>
+                <td>@request.RequestedAt</td>
+                <td><button @onclick="() => AcceptRequest(request.Id)">Accept</button></td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var request in requests)
-            {
-                <tr>
-                    <td>@request.RequestID</td>
-                    <td>@request.PatientId</td>
-                    <td>@request.DoctorId</td>
-                    <td>@request.RequestStatus</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+        }
+    </tbody>
+</table>
 
-@code {
-    private List<Request> requests;
-
-    protected override async Task OnInitializedAsync()
-    {
-        requests = await Http.GetFromJsonAsync<List<Request>>("api/patient/get-requests");
-    }
-}
