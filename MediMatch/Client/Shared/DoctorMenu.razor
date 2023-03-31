@@ -71,7 +71,7 @@
 <div class="sidebar">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="DoctorPage" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </div>
@@ -96,7 +96,7 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="DoctorProfile">
+            <NavLink class="nav-link" href="Doctor-Profile" Match="NavLinkMatch.All"> 
                 <span class="oi oi-envelope-open" aria-hidden="true"></span> Profile
             </NavLink>
         </div>
@@ -116,6 +116,7 @@
     private async Task BeginSignOut(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
+        await Task.Delay(2000);
         Navigation.NavigateTo("authentication/logout");
     }
 }
