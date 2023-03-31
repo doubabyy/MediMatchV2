@@ -28,6 +28,8 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+            //return Redirect("~/");
+
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);
@@ -38,6 +40,7 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
                 // request and the identity for the user gets updated.
                 return RedirectToPage();
             }
+            
         }
     }
 }
