@@ -6,13 +6,12 @@
 
 <AuthorizeView>
     <Authorized>
-        
-        <a href="BrowseCounselors">Browse Doctors</a>
         <a href="authentication/profile">Account</a>
+        <button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
     </Authorized>
+    
     <NotAuthorized>
         <a href="authentication/register">Register</a>
-         <button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
         <a href="authentication/login">Log in</a>
     </NotAuthorized>
 </AuthorizeView>

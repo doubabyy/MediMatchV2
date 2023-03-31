@@ -149,15 +149,23 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
                 user.DOB = Input.DOB;
                 user.Address = Input.Address;
                 user.UserType = Input.UserType;
-
-
+                
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    if (Input.UserType == "D")
+                    {
+                        await _userManager.AddToRoleAsync(user, "Doctor");
+                    }
+                    else if (Input.UserType == "P")
+                    {
+                        await _userManager.AddToRoleAsync(user, "Patient");
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
+                    
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -171,7 +179,8 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                       
+                       return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {

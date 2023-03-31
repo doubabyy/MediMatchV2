@@ -36,6 +36,7 @@
                         <button style="text-decoration:none;color:black" class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
                     </div>
                 </Authorized>
+                <!--
                 <NotAuthorized>
                     <div class="col">
                         <NavLink style="text-decoration:none;color:black" class="nav-link" href="authentication/register">
@@ -48,13 +49,14 @@
                         </NavLink>
                     </div>
                 </NotAuthorized>
+                -->
             </AuthorizeView>
         </div>
     </div>
     <main>
-        @* <div class="top-row px-12 auth">
+        @*<div class="top-row px-12 auth">
             <LoginDisplay />
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a> 
         </div>*@
 
         <div class="sidebar">
@@ -71,6 +73,7 @@
      private async Task BeginSignOut(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
+        await Task.Delay(2000);
         Navigation.NavigateTo("authentication/logout");
     }
 }
