@@ -18,6 +18,8 @@
     }
 
 </style>
+
+ 
 <div class="page">
     <div class="container-fluid top-navbar">
         <div class="row align-items-center">
@@ -40,7 +42,8 @@
                     <div class="col px-40">
                         <button style="text-decoration:none;color:black" class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
                     </div>
-                </Authorized>
+              </Authorized>
+               @*
                 <NotAuthorized>
                     <div class="col">
                         <NavLink style="text-decoration:none;color:black" class="nav-link" href="authentication/register">
@@ -53,7 +56,9 @@
                         </NavLink>
                     </div>
                 </NotAuthorized>
+               *@
             </AuthorizeView>
+            
         </div>
     </div>
     <main>

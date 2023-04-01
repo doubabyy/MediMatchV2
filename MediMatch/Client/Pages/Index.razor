@@ -1,9 +1,57 @@
 ﻿@page "/"
 
 <PageTitle>Index</PageTitle>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    .shape {
+        border-radius: 25px;
+        width: 300px;
+        height: 300px;
+        background-image: linear-gradient(to right, mediumseagreen, cadetblue);
+    }
+
+    .float-container {
+          align-items: center;
+          padding: 50px 0;
+          height: 400px;
+          width: 650px;
+         /* border: 3px solid green;*/
+    }
+
+    .child-1 {
+        width: 45%;
+        float: left;
+        font-size: 120%;
+        
+    }
+     .child-2 {
+        width: 45%;
+        float: right;
+        font-size: 130%;
+        
+    }
+    .center {
+        text-align: center;
+        padding: 120px 110px 120px 110px;
+    }
+</style>
+</head>
 
 <h2><center>Welcome to Medi Match</center></h2>
 
 <center> <h5>Where we provide tailored access to mental health specialists for all mental health needs. </h5> </center>
 
-<!--<SurveyPrompt Title="How Do you like our app so far?" />-->
+<center><div class = "float-container"> 
+            <div class = "child-1">
+                <div class = "shape center"><a style="text-decoration:none;color:black" href="authentication/register">Register</a>
+                </div>
+            </div>
+            <div class = "child-2">
+                <div class = "shape center"><a style="text-decoration:none;color:black" href="authentication/login">Log in</a>
+                </div>
+            </div>
+        </div>
+</center>
+
+<!-- <SurveyPrompt Title="How Do you like our app so far?" />-->

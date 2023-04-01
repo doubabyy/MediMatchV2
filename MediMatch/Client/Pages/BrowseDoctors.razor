@@ -1,8 +1,11 @@
 ﻿@page "/BrowseDoctors"
+
 @inject HttpClient Http
-@using System.ComponentModel.DataAnnotations
 @layout PatientLayout
-@inject HttpClient Http
+
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components
+
 
 <style>
     h3 {
@@ -23,6 +26,7 @@
 </style>
 
 <h3>Browse Doctors</h3>
+
 
 <table class="doctor-table">
     <thead>

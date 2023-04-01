@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
-<style>
+
+@*<style>
     .shape {
         border-radius: 25px;
         width: 300px;
@@ -32,7 +33,7 @@
         padding: 120px 110px 120px 110px;
     }
 </style>
-
+*@
 
 <div class="page">
     <!--
@@ -41,15 +42,10 @@
     </div>
     -->
     <main>
-        <!--
-        <div class="top-row px-4 auth">
-            <LoginDisplay/>
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a> 
-        </div>
-        -->
         <article class="content px-4">
             @Body
         </article>
+        @*
         <center><div class = "float-container"> 
             <div class = "child-1">
                 <div class = "shape center"><a style="text-decoration:none;color:black" href="authentication/register">Register</a>
@@ -60,5 +56,22 @@
                 </div>
             </div>
         </div></center>
+        *@
     </main>
 </div>
+
+
+ 
+
+
+
+
+
+
+
+<!--
+        <div class="top-row px-4 auth">
+            <LoginDisplay/>
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a> 
+        </div>
+        -->

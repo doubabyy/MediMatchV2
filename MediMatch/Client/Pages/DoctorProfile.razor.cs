@@ -10,7 +10,10 @@ namespace MediMatch.Client.Pages
     {
         [Inject]
         public HttpClient Http { get; set; }
-        public DoctorDto DoctorDto { get; set; } = new DoctorDto();
+        public DoctorDto? DoctorDto { get; set; } = new DoctorDto();
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
         
 
         protected override async Task OnInitializedAsync()
@@ -24,7 +27,7 @@ namespace MediMatch.Client.Pages
             var response = await Http.PutAsJsonAsync("api/doctor-profile", DoctorDto);
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Added Values to Doctor");
+                NavigationManager.NavigateTo("/DoctorPage");
             }
         }
     }

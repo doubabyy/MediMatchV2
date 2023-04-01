@@ -119,12 +119,13 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User logged in.");
                     var user = await _userManager.FindByEmailAsync(Input.Email);
-                    if (user.UserType == "D")
+
+                    if (await _userManager.IsInRoleAsync(user, "Doctor"))
                     {
                         return Redirect("~/DoctorPage");
 
                     }
-                    else if (user.UserType == "P")
+                    else if (await _userManager.IsInRoleAsync(user, "Patient"))
                     {
                         return Redirect("~/PatientPage");
                     } 
