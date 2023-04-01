@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MediMatch.Server.Controllers
 {
+    [Route("api/bill")]
+    [ApiController]
     public class BillController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,7 +23,7 @@ namespace MediMatch.Server.Controllers
         }
 
         [HttpGet]
-        [Route("api/get-bills-history")]
+        [Route("get-bills-history")]
         public async Task<ActionResult<List<Bill>>> GetBillsHistory()
         {
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -47,7 +49,7 @@ namespace MediMatch.Server.Controllers
         }
 
         [HttpGet]
-        [Route("api/get-bills-upcoming")]
+        [Route("get-bills-upcoming")]
         public async Task<ActionResult<List<Bill>>> GetBillsUpcoming()
         {
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -73,7 +75,7 @@ namespace MediMatch.Server.Controllers
         }
 
         [HttpPost]
-        [Route("api/make-payment")]
+        [Route("make-payment")]
         public async Task<ActionResult> MakePayment([FromBody] int bill_id)
         {
             //var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
