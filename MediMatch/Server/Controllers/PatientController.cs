@@ -30,10 +30,10 @@ namespace MediMatch.Server.Controllers
                                     && (from d in _context.Users 
                                         join m in _context.Matches on d.Id equals m.DoctorId
                                         where d.UserType == "D" &&
-                                            m.PatientId == user.Id
+                                            m.PatientId == user.Id &&
+                                            d.Id == u.Id
                                         select d).Count() == 0
                                  select u).ToListAsync();
-
 
             return Ok(doctors);
         }
