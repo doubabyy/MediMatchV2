@@ -55,7 +55,7 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     await Task.Delay(2000);
-                    return Redirect("~/DoctorPage");
+                    return Redirect("~/Doctor-Profile");
 
                 }
                 else if (await _userManager.IsInRoleAsync(user, "Patient"))

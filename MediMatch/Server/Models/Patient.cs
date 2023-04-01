@@ -17,6 +17,7 @@ namespace MediMatch.Server.Models
         public string Age { get; set; }
         public string Gender { get; set; }
         public string Description { get; set; }
+       
         public ApplicationUser ApplicationUser { get; set; }
 
 
