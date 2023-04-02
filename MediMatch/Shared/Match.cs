@@ -13,6 +13,7 @@ namespace MediMatch.Shared
         public string DoctorId { get; set; }
         public DateTime RequestedAt { get; set; }
         public DateTime? AcceptedAt { get; set; }
+        public DateTime? RejectedAt { get; set; }
         public bool Accepted { get; set; }
     }
 }

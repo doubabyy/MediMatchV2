@@ -21,7 +21,7 @@ namespace MediMatch.Server.Controllers
 
         [HttpGet]
         [Route("api/browse-doctors")]
-        public async Task<ActionResult<List<Bill>>> BrowseDoctors()
+        public async Task<ActionResult<List<DoctorDto>>> BrowseDoctors()
         {
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
 

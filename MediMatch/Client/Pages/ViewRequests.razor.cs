@@ -20,5 +20,13 @@ namespace MediMatch.Client.Pages
             Requests = await Http.GetFromJsonAsync<List<Match>>("api/get-requests");
             StateHasChanged();
         }
+
+        // Add a reject Method 
+        private async Task RejectRequest(int request_id)
+        {
+            await Http.PostAsJsonAsync("api/reject-request", request_id);
+            Requests = await Http.GetFromJsonAsync<List<Match>>("api/get-requests");
+            StateHasChanged();
+        }
     }
 }

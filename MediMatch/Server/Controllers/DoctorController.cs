@@ -86,12 +86,7 @@ namespace MediMatch.Server.Controllers
 
 
         }
-        [HttpGet]
-        [Route("GetRequests/{doctorId}")]
-        public async Task<ActionResult<IEnumerable<Match>>> GetRequests(string doctorId)
-        {
-            return await _context.Matches.Where(r => r.DoctorId == doctorId).ToListAsync();
-        }
+       
 
     }
 }

@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace MediMatch.Server.Controllers
 {
-    public class RequestController : ControllerBase
+    public class MatchesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public RequestController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public MatchesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -48,6 +48,18 @@ namespace MediMatch.Server.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
+        // add a reject request 
+        [HttpPost]
+        [Route("api/reject-request")]
+        public async Task<ActionResult> RejectRequest([FromBody] int request_id)
+        {
+            var myRequest = await _context.Matches.FirstOrDefaultAsync(u => u.Id == request_id);
+            myRequest.Accepted = false; 
+            myRequest.RejectedAt = DateTime.Now; 
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
 
         // GET: api/Request/5
         //[HttpGet("{id}")]
