@@ -19,19 +19,19 @@ namespace MediMatch.Client.Pages
             var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
             if (UserAuth is not null && UserAuth.IsAuthenticated)
             {
-                BillsHist = await Http.GetFromJsonAsync<List<BillDisplay>>("api/get-bills-history");
-                BillsUpcoming = await Http.GetFromJsonAsync<List<BillDisplay>>("api/get-bills-upcoming");
+                BillsHist = await Http.GetFromJsonAsync<List<BillDisplay>>("api/bill/get-bills-history");
+                BillsUpcoming = await Http.GetFromJsonAsync<List<BillDisplay>>("api/bill/get-bills-upcoming");
             }
 
         }
 
         private async void MakePayment(int bill_id)
         {
-            await Http.PostAsJsonAsync("api/make-payment", bill_id);
+            await Http.PostAsJsonAsync("api/bill/make-payment", bill_id);
             //await InvokeAsync(() => StateHasChanged());
             //StateHasChanged();
-            BillsHist = await Http.GetFromJsonAsync<List<BillDisplay>>("api/get-bills-history");
-            BillsUpcoming = await Http.GetFromJsonAsync<List<BillDisplay>>("api/get-bills-upcoming");
+            BillsHist = await Http.GetFromJsonAsync<List<BillDisplay>>("api/bill/get-bills-history");
+            BillsUpcoming = await Http.GetFromJsonAsync<List<BillDisplay>>("api/bill/get-bills-upcoming");
             StateHasChanged();
         }
 

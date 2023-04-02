@@ -22,12 +22,12 @@ namespace MediMatch.Server.Controllers
         
         
         [HttpGet("api/doctor-profile")]
-        public async Task<ActionResult<DoctorDto>> GetDoctor()
+        public async Task<ActionResult<DoctorDto?>> GetDoctor()
         {
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             Doctor? doctor = await _context.Doctors.FindAsync(user.Id);
-            
+
             var dto = new DoctorDto()
             {
                 Id = user.Id,
@@ -35,7 +35,7 @@ namespace MediMatch.Server.Controllers
                 LastName = user.LastName
             };
 
-            if (doctor!= null)
+            if (doctor != null)
             {
                 dto.Description = doctor.Description;
                 dto.Availability = doctor.Availability;
@@ -44,35 +44,41 @@ namespace MediMatch.Server.Controllers
                 dto.AcceptsInsurance = doctor.AcceptsInsurance;
             }
 
-            
+
             return dto;
 
         }
+     
+
 
         [HttpPut("api/doctor-profile")]
-        public async Task<IActionResult> UpdateDoctorDetails([FromBody] DoctorDto dto)
+        public async Task<IActionResult> UpdateDoctorDetails( [FromBody] DoctorDto dto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
             Doctor? doctor = await _context.Doctors.FindAsync(user.Id);
-            if (doctor == null)
+
+            if (doctor != null)
+            {
+                doctor.Specialty = dto.Specialty;
+                doctor.Description = dto.Description;
+                doctor.Availability = dto.Availability;
+                doctor.Rates = dto.Rates;
+                doctor.AcceptsInsurance = dto.AcceptsInsurance;
+
+            }
+            else
             {
                 doctor = new Doctor()
                 {
                     ApplicationUserId = user.Id,
+                    Specialty = dto.Specialty,
                     Description = dto.Description,
                     Availability = dto.Availability,
-                    Specialty = dto.Specialty,
                     Rates = dto.Rates,
-                    AcceptsInsurance = dto.AcceptsInsurance,
+                    AcceptsInsurance = dto.AcceptsInsurance
                 };
                 _context.Doctors.Add(doctor);
             }
-
-            else
-            {
-                _context.Entry(user.Doctor).State = EntityState.Modified;
-            }
-
             try
             {
                 await _context.SaveChangesAsync();

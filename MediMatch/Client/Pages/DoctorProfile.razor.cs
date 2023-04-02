@@ -14,14 +14,14 @@ namespace MediMatch.Client.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
-        
 
         protected override async Task OnInitializedAsync()
         {
+           
             DoctorDto = await Http.GetFromJsonAsync<DoctorDto>("api/doctor-profile");
             
+          
         }
-
         private async Task NewInputs()
         {
             var response = await Http.PutAsJsonAsync("api/doctor-profile", DoctorDto);
@@ -32,3 +32,4 @@ namespace MediMatch.Client.Pages
         }
     }
 }
+ 
