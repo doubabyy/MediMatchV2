@@ -282,17 +282,41 @@ namespace MediMatch.Server.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Age")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<bool>("DepAnx")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(400)");
+                    b.Property<string>("DepAnxDesc")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
-                        .IsRequired()
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ProblemsDesc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SubstanceAbuse")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SubstanceAbuseDesc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SuicThoughts")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SuicThoughtsDesc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SupportSystem")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Therapy")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TherapyDesc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TreatmentGoals")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ApplicationUserId");
 

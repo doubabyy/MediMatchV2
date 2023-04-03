@@ -23,7 +23,8 @@ namespace MediMatch.Server.Controllers
         }
 
 
-        [HttpGet("doctor-profile")]
+        [HttpGet]
+        [Route("doctor-profile")]
         public async Task<ActionResult<DoctorDto?>> GetDoctor()
         {
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -101,51 +102,53 @@ namespace MediMatch.Server.Controllers
                                    Paid = b.Paid
                                }).ToListAsync();
             return Ok(bills);
+        }
 
-            /*
-                    [HttpPut("doctor-profile")]
-                    public async Task<IActionResult> UpdateDoctorDetails( [FromBody] DoctorDto dto)
-                    {
-                        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
-                        Doctor? doctor = await _context.Doctors.FindAsync(user.Id);
+           
+        [HttpPut]
+        [Route("doctor-profile")]
+        public async Task<IActionResult> UpdateDoctorDetails( [FromBody] DoctorDto dto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            Doctor? doctor = await _context.Doctors.FindAsync(user.Id);
 
-                        if (doctor != null)
-                        {
-                            doctor.Specialty = dto.Specialty;
-                            doctor.Description = dto.Description;
-                            doctor.Availability = dto.Availability;
-                            doctor.Rates = dto.Rates;
-                            doctor.AcceptsInsurance = dto.AcceptsInsurance;
+            if (doctor != null)
+            {
+                doctor.Specialty = dto.Specialty;
+                doctor.Description = dto.Description;
+                doctor.Availability = dto.Availability;
+                doctor.Rates = dto.Rates;
+                doctor.AcceptsInsurance = dto.AcceptsInsurance;
 
-                        }
-                        else
-                        {
-                            doctor = new Doctor()
-                            {
-                                ApplicationUserId = user.Id,
-                                Specialty = dto.Specialty,
-                                Description = dto.Description,
-                                Availability = dto.Availability,
-                                Rates = dto.Rates,
-                                AcceptsInsurance = dto.AcceptsInsurance
-                            };
-                            _context.Doctors.Add(doctor);
-                        }
-                        try
-                        {
-                            await _context.SaveChangesAsync();
-                        }
-                        catch (DbUpdateConcurrencyException)
-                        {
-                            throw;
-                        }
+            }
+            else
+            {
+                doctor = new Doctor()
+                {
+                    ApplicationUserId = user.Id,
+                    Specialty = dto.Specialty,
+                    Description = dto.Description,
+                    Availability = dto.Availability,
+                    Rates = dto.Rates,
+                    AcceptsInsurance = dto.AcceptsInsurance
+                };
+                _context.Doctors.Add(doctor);
+            }
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
 
-                        return NoContent();
+            return NoContent();
 
-
-                    }
-                   */
 
         }
+                   
+
+        
     }
 }

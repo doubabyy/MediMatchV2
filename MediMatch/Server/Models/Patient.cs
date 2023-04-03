@@ -14,10 +14,24 @@ namespace MediMatch.Server.Models
         [Key]
         public string ApplicationUserId { get; set; }
 
-        public string Age { get; set; }
-        public string Gender { get; set; }
-        public string Description { get; set; }
-       
+        public string? Gender { get; set; } = null!;
+        public bool DepAnx { get; set; }
+
+        public string? DepAnxDesc { get; set; } = null!;
+        public bool SuicThoughts { get; set; }
+
+        public string? SuicThoughtsDesc { get; set; } = null!;
+        public bool SubstanceAbuse { get; set; }
+        public string? SubstanceAbuseDesc { get; set; } = null!;
+
+        public string? SupportSystem { get; set; } = null!;
+        public bool Therapy { get; set; }
+        public string? TherapyDesc { get; set; } = null!;
+
+        public string? ProblemsDesc { get; set; } = null!;
+
+        public string? TreatmentGoals { get; set; } = null!;
+
         public ApplicationUser ApplicationUser { get; set; }
 
 

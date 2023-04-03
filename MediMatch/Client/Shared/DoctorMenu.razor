@@ -3,31 +3,35 @@
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 
-<style>
-    .navbar {
-        background-color: #6fb98f;
-    }
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    .nav-link {
-        color: floralwhite;
-    }
+    <style>
+        .navbar {
+            background-color: #6fb98f;
+        }
 
-    .nav-link:hover {
-        color: #a0aec0;
-        text-decoration: none;
-    }
+        .nav-link {
+            color: floralwhite;
+        }
 
-    .sidebar {
-       background-image: linear-gradient(to bottom, steelblue, cadetblue);
-        height: 100vh;
-        width: 15%;
-        position: fixed;
-    }
+        .nav-link:hover {
+            color: #a0aec0;
+            text-decoration: none;
+        }
 
-    .content {
-        margin-left: 15%;
-    }
-</style>
+        .sidebar {
+           background-image: linear-gradient(to bottom, steelblue, cadetblue);
+            height: 100vh;
+            width: 15%;
+            position: fixed;
+        }
+
+        .content {
+            margin-left: 15%;
+        }
+    </style>
+</head>
 
 
  @*   <div class="container-fluid">

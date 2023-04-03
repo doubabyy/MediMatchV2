@@ -8,33 +8,46 @@
 @using MediMatch.Shared
 @using System.Threading
 
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+    .form-elemenet {
+        display: inline
+    }
+</style>
+</head>
 
 
-<h3> Edit Doctor Profile </h3> 
 
-<EditForm Model="@DoctorDto" OnValidSubmit="NewInputs">
+<center><h3> Doctor Profile </h3> </center>
+<br />
+<EditForm Model="@DoctorDto" OnValidSubmit="NewDoctorInputs"> 
     <DataAnnotationsValidator />
     <ValidationSummary />
     
-    <div class="form-group">
-        <label for="DueDate">Specialty</label>
-        <InputText class="form-control" id="DueDate" @bind-Value="DoctorDto.Specialty" />
+    <div class="form-element">
+        <label for="DueDate"> Specialty(ies):    </label>    
+        <InputText id="Specialty" @bind-Value="DoctorDto.Specialty" />
     </div>
+    <br />
     <div class="form-group">
-        <label for="Title">Description</label>
-        <InputTextArea class="form-control" id="Title" @bind-Value="DoctorDto.Description" />
+        <label for="Title">Give a brief description of your qualifications: </label>
+        <InputTextArea class="form-control" id="Description" @bind-Value="DoctorDto.Description" />
     </div>
-    <div class="form-group">
-        <label for="DueDate">Availability</label>
-        <InputText class="form-control" id="DueDate" @bind-Value="DoctorDto.Availability" />
+     <br />
+    <div class="form-element">
+        <label for="DueDate">Availability: </label> <InputText id="Availability" @bind-Value="DoctorDto.Availability" />
     </div>
-    <div class="form-group">
-        <label for="DueDate">Rate per hour</label>
-        <InputNumber class="form-control" id="DueDate" @bind-Value="DoctorDto.Rates" />
+     <br />
+    <div class="form-element">
+        <label for="DueDate">Rate per hour: </label> <InputNumber id="Rate" @bind-Value="DoctorDto.Rates" />
+     </div>
+     <br />
+  <div class="form-element">
+       <label for="Completed">Do you accept Insurance? If yes, check the box. </label> <InputCheckbox class="form-check-input" id="Insurance" @bind-Value="DoctorDto.AcceptsInsurance" /> 
     </div>
-    <div class="form-group">
-        <InputCheckbox class="form-check-input" id="Completed" @bind-Value="DoctorDto.AcceptsInsurance" />
-        <label for="Completed">Accepts Insurance</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</EditForm>
+     <br />
+    <center> <button type="submit" class="btn btn-primary">Submit</button></center>
+</EditForm> 
+
+@*class="form-control"*@
