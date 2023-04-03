@@ -1,0 +1,56 @@
+﻿@page "/ScheduleAppointments"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@inject HttpClient Http
+@layout PatientLayout
+
+@inject IJSRuntime JSRuntime
+
+<h1>Schedule Appointments</h1>
+
+<div class="container">
+    <form>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="email" name="email">
+        </div>
+
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone:</label>
+            <input type="tel" class="form-control" id="phone" name="phone">
+        </div>
+
+        <div class="mb-3">
+            <label for="datetime" class="form-label">Appointment Date and Time:</label>
+            <input type="text" class="form-control" id="datetime" name="datetime">
+        </div>
+
+        <div class="mb-3">
+            <label for="reason" class="form-label">Reason for Visit:</label>
+            <textarea class="form-control" id="reason" name="reason"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Schedule Appointment</button>
+    </form>
+</div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("flatpickr", "#datetime", new
+            {
+                enableTime = true,
+                dateFormat = "Y-m-d H:i",
+                minDate = "today"
+            });
+        }
+    }
+}

@@ -32,6 +32,7 @@ namespace MediMatch.Server.Controllers
             var requests = await (from m in _context.Matches
                                 where m.DoctorId == user.Id
                                     && m.Accepted == false
+                                    && m.RejectedAt == null
                                 orderby m.RequestedAt descending
                                 select m).ToListAsync();
             return Ok(requests);

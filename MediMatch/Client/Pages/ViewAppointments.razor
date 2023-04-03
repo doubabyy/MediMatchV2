@@ -1,0 +1,20 @@
+﻿@page "/ViewAppointments"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@inject HttpClient Http
+@layout DoctorLayout
+@inject IJSRuntime JSRuntime
+
+<h3>View Appointments</h3>
+<div id="calendar"></div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeCalendar");
+        }
+    }
+}
