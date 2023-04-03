@@ -1,0 +1,15 @@
+﻿@page "/Patient/{id}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@layout PatientLayout
+@inject HttpClient Http
+@using System.Threading;
+
+<h3>PatientDetailPage</h3>
+
+<h1>@Patient.FirstName</h1>
+<h1>@Patient.LastName</h1>
+<h1>@Patient.Age</h1>
+<h1>@Patient.Description</h1>
+

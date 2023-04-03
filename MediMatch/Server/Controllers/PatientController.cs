@@ -21,6 +21,26 @@ namespace MediMatch.Server.Controllers
             _userManager = userManager;
         }
 
+        //deal with case when patient is not registered
+        [HttpGet]
+        [Route("get-patient")]
+        public async Task<ActionResult<PatientDto>> GetPatient([FromBody] string patient_id)
+        {
+            var patient = await (from p in _context.Patients
+                                 join u in _context.Users on p.ApplicationUserId equals u.Id
+                                 where u.Id == patient_id
+                                 select new PatientDto
+                                 {
+                                     Id = patient_id,
+                                     FirstName = u.FirstName,
+                                     LastName = u.LastName,
+                                     Age = p.Age,
+                                     Gender = p.Gender,
+                                     Description = p.Description
+                                  }).ToListAsync();
+            return Ok(patient);
+        }
+
         [HttpGet]
         [Route("browse-doctors")]
         public async Task<ActionResult<List<DoctorDto>>> BrowseDoctors()
