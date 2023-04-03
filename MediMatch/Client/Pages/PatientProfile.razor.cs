@@ -2,34 +2,31 @@
 using System.Net.Http.Json;
 using MediMatch.Shared;
 
-
 namespace MediMatch.Client.Pages
-
 {
-    public partial class DoctorProfile
+    public partial class PatientProfile
     {
         [Inject]
         public HttpClient Http { get; set; }
-        public DoctorDto? DoctorDto { get; set; } = new DoctorDto();
+        public PatientDto? PatientDto { get; set; } = new PatientDto();
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
 
         protected override async Task OnInitializedAsync()
         {
-           
-            DoctorDto = await Http.GetFromJsonAsync<DoctorDto>("api/doctor/doctor-profile");
-            
-          
+
+            PatientDto = await Http.GetFromJsonAsync<PatientDto>("api/patient/patient-profile");
+
+
         }
-        private async Task NewDoctorInputs()
+        private async Task NewPatientInputs()
         {
-            var response = await Http.PutAsJsonAsync("api/doctor/doctor-profile", DoctorDto);
+            var response = await Http.PutAsJsonAsync("api/patient/patient-profile", PatientDto);
             if (response.IsSuccessStatusCode)
             {
-                NavigationManager.NavigateTo("/DoctorPage");
+                NavigationManager.NavigateTo("/PatientPage");
             }
         }
     }
 }
- 

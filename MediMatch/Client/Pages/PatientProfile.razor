@@ -1,0 +1,88 @@
+﻿@page "/Patient-Profile"
+@layout PatientLayout
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+@using MediMatch.Shared
+@using System.Threading
+
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+    .form-elemenet {
+        display: inline
+    }
+</style>
+</head>
+
+
+
+<center><h3> Patient Profile </h3> </center>
+<br />
+<EditForm Model="@PatientDto" OnValidSubmit="NewPatientInputs"> 
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+    <div class="form-element">
+        <label for="Gender"> Gender: </label>    
+        <InputText id="Gender" @bind-Value="PatientDto.Gender" />
+    </div>
+  
+    <div class="form-element">
+        <label for="Dep&Anx">Have you experienced/Are you experiencing symptoms of depression or anxiety?  </label> <InputCheckbox id="Dep&Anx" @bind-Value="PatientDto.DepAnx" />
+    </div>
+
+    <div class="form-element">
+        <label for="Dep&AnxDesc"> If yes, for how long? </label>    
+        <InputText id="Dep&AnxDesc" @bind-Value="PatientDto.DepAnxDesc" />
+    </div>
+
+    <div class="form-element">
+        <label for="SuicThoughts">Have you experienced/Are you experiencing suicidial thoughts? </label> <InputCheckbox id="SuicThoughts" @bind-Value="PatientDto.SuicThoughts" />
+    </div>
+    
+    <div class="form-element">
+        <label for="SuicThoughtsDesc"> If yes, for how long? </label>    
+        <InputText id="SuicThoughtsDesc" @bind-Value="PatientDto.SuicThoughtsDesc" />
+    </div>
+
+    <div class="form-element">
+        <label for="SubstanceAbuse">Have you ever had a substance abuse issue? </label> <InputCheckbox id="SubstanceAbuse" @bind-Value="PatientDto.SubstanceAbuse" />
+    </div>
+
+    <div class="form-group">
+        <label for="SubstanceAbuseDesc"> If yes, please elaborate. </label>    
+        <InputTextArea class="form-control" id="SubstanceAbuseDesc" @bind-Value="PatientDto.SubstanceAbuseDesc" />
+    </div>
+
+    <div class="form-group">
+        <label for="SupportSystem">Describe your support system to help you manage stressful times. </label>
+        <InputTextArea class="form-control" id="SupportSystem" @bind-Value="PatientDto.SupportSystem" />
+    </div>
+
+    <div class="form-element">
+        <label for="Therapy">Have you ever seeked out therapy before? </label> <InputCheckbox id="Therapy" @bind-Value="PatientDto.Therapy" />
+    </div>
+
+    <div class="form-group">
+        <label for="TherapyDesc"> If yes, describe your experience. </label>    
+        <InputTextArea class="form-control" id="TherapyDesc" @bind-Value="PatientDto.TherapyDesc" />
+    </div>
+
+    <div class="form-group">
+        <label for="ProblemsDesc"> Describe in detail the problems you are seeking help for. </label>    
+        <InputTextArea class="form-control" id="ProblemsDesc" @bind-Value="PatientDto.ProblemsDesc" />
+    </div>
+
+    <div class="form-group">
+        <label for="TreatmentGoals"> What are your treatment goals? </label>    
+        <InputTextArea class="form-control" id="TreatmentGoals" @bind-Value="PatientDto.TreatmentGoals" />
+    </div>
+  
+    <center> <button type="submit" class="btn btn-primary">Submit</button></center>
+</EditForm> 
+
+

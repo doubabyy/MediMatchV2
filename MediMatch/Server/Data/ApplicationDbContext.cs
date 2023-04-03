@@ -34,20 +34,18 @@ namespace MediMatch.Server.Data
                 .HasForeignKey<Doctor>(e => e.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
+            
             builder.Entity<Patient>().ToTable("Patients");
             builder.Entity<Patient>(e =>
             {
                 e.HasKey(d => d.ApplicationUserId);
-                e.Property(d => d.Age).IsRequired(true).HasColumnType<string>("nvarchar(50)");
-                e.Property(d => d.Gender).IsRequired(true).HasColumnType<string>("nvarchar(50)");
-                e.Property(d => d.Description).IsRequired(true).HasColumnType<string>("nvarchar(400)");
+                e.Property(d => d.Gender).HasColumnType<string>("nvarchar(50)");
             });
             builder.Entity<Patient>()
                 .HasOne(e => e.ApplicationUser)
                 .WithOne(p => p.Patient)
                 .HasForeignKey<Patient>(e => e.ApplicationUserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade); 
         }
         //public DbSet<Message> Messages => Set<Message>();
         public DbSet<Bill> Bills => Set<Bill>();

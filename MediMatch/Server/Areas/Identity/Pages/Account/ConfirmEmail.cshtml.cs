@@ -62,7 +62,7 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     await Task.Delay(2000);
-                    return Redirect("~/PatientPage");
+                    return Redirect("~/Patient-Profile");
                 }
             }
         return Page();
