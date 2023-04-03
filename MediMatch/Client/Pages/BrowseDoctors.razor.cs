@@ -15,14 +15,14 @@ namespace MediMatch.Client.Pages
             var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
             if (UserAuth is not null && UserAuth.IsAuthenticated)
             {
-                Doctors = await Http.GetFromJsonAsync<List<DoctorDto>>("api/browse-doctors");
+                Doctors = await Http.GetFromJsonAsync<List<DoctorDto>>("api/patient/browse-doctors");
             }
         }
 
         private async void SendRequest(string doc_id)
         {
-            await Http.PostAsJsonAsync("api/send-request", doc_id);
-            Doctors = await Http.GetFromJsonAsync<List<DoctorDto>>("api/browse-doctors");
+            await Http.PostAsJsonAsync("api/patient/send-request", doc_id);
+            Doctors = await Http.GetFromJsonAsync<List<DoctorDto>>("api/patient/browse-doctors");
             StateHasChanged();
         }
     }

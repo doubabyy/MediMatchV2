@@ -8,6 +8,8 @@ using System.Security.Claims;
 
 namespace MediMatch.Server.Controllers
 {
+    [Route("api/patient")]
+    [ApiController]
     public class PatientController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,26 +22,35 @@ namespace MediMatch.Server.Controllers
         }
 
         [HttpGet]
-        [Route("api/browse-doctors")]
+        [Route("browse-doctors")]
         public async Task<ActionResult<List<DoctorDto>>> BrowseDoctors()
         {
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            var doctors = await (from u in _context.Users
-                                 where u.UserType == "D"
-                                    && (from d in _context.Users 
-                                        join m in _context.Matches on d.Id equals m.DoctorId
-                                        where d.UserType == "D" &&
-                                            m.PatientId == user.Id &&
-                                            d.Id == u.Id
+            var doctors = await (from u in _context.Doctors
+                                 join appuser in _context.Users on u.ApplicationUserId equals appuser.Id
+                                 where (from d in _context.Doctors 
+                                        join m in _context.Matches on d.ApplicationUserId equals m.DoctorId
+                                        where m.PatientId == user.Id &&
+                                            d.ApplicationUserId == u.ApplicationUserId
                                         select d).Count() == 0
-                                 select u).ToListAsync();
+                                 select new DoctorDto
+                                 {
+                                     Id = u.ApplicationUserId,
+                                     FirstName = appuser.FirstName,
+                                     LastName = appuser.LastName,
+                                     Description = u.Description,
+                                     Availability = u.Availability,
+                                     Specialty = u.Specialty,
+                                     Rates = u.Rates,
+                                     AcceptsInsurance = u.AcceptsInsurance
+                                 }).ToListAsync();
 
             return Ok(doctors);
         }
 
         [HttpPost]
-        [Route("api/send-request")]
+        [Route("send-request")]
         public async Task<ActionResult> SendRequest([FromBody] string doc_id)
         {
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -54,6 +65,7 @@ namespace MediMatch.Server.Controllers
                     DoctorId = doc_id,
                     RequestedAt = DateTime.Now,
                     AcceptedAt = null,
+                    RejectedAt = null,
                     Accepted = false
                 };
             _context.Matches.Add(match);

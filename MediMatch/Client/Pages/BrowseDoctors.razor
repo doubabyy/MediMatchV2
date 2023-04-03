@@ -37,7 +37,6 @@
             <th>Rating</th>
             <th>Availability</th>
             <th>Rates</th>
-            <th>Accepts Insurance</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -46,13 +45,11 @@
         {
             <tr>
                 <td>@doctor.FirstName @doctor.LastName</td>
-                <td>xxx</td>
-                <td>xxx</td>
-                @*<td><span class="rating">@for (int i = 0; i < (int)Math.Round((double)doctor.Rating); i++) { <text>⭐</text> }</span></td>*@
-                <td>5</td>
-                <td>xxx</td>
-                <td>xxx</td>
-                @*<td>@(doctor.AcceptsInsurance ? "Yes" : "No")</td>*@
+                <td>@doctor.Specialty</td>
+                <td>@doctor.Description</td>
+                <td>to do</td>
+                <td>@doctor.Availability</td>
+                <td>@doctor.Rates</td>
                 <td><button @onclick="() => SendRequest(doctor.Id)">Send Request</button></td>
             </tr>
         }

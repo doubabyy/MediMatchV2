@@ -9,6 +9,8 @@ using System.Linq;
 
 namespace MediMatch.Server.Controllers
 {
+    [Route("api/doctor")]
+    [ApiController]
     public class DoctorController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -21,7 +23,7 @@ namespace MediMatch.Server.Controllers
         }
         
         
-        [HttpGet("api/doctor-profile")]
+        [HttpGet("doctor-profile")]
         public async Task<ActionResult<DoctorDto?>> GetDoctor()
         {
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -51,7 +53,7 @@ namespace MediMatch.Server.Controllers
      
 
 
-        [HttpPut("api/doctor-profile")]
+        [HttpPut("doctor-profile")]
         public async Task<IActionResult> UpdateDoctorDetails( [FromBody] DoctorDto dto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
