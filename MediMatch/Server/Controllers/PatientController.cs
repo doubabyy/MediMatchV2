@@ -23,23 +23,45 @@ namespace MediMatch.Server.Controllers
 
         //deal with case when patient is not registered
         [HttpGet]
-        [Route("get-patient")]
-        public async Task<ActionResult<PatientDto>> GetPatient([FromBody] string patient_id)
+        [Route("get-patient/{patient_id}")]
+        public async Task<ActionResult<PatientDto>> GetPatientDetail([FromRoute] string patient_id)
         {
-            var patient = await (from p in _context.Patients
-                                 join u in _context.Users on p.ApplicationUserId equals u.Id
-                                 where u.Id == patient_id
-                                 select new PatientDto
-                                 {
-                                     Id = patient_id,
-                                     FirstName = u.FirstName,
-                                     LastName = u.LastName,
-                                     Age = p.Age,
-                                     Gender = p.Gender,
-                                     Description = p.Description
-                                  }).ToListAsync();
-            return Ok(patient);
+            try
+            {
+                var patient = await (from p in _context.Patients
+                                     join u in _context.Users on p.ApplicationUserId equals u.Id
+                                     where u.Id == patient_id
+                                     select new PatientDto
+                                     {
+                                         Id = patient_id,
+                                         FirstName = u.FirstName,
+                                         LastName = u.LastName,
+                                         Age = 10,
+                                         DOB = u.DOB,
+                                         Gender = p.Gender,
+                                         DepAnx = p.DepAnx,
+                                         DepAnxDesc = p.DepAnxDesc,
+                                         SuicThoughts = p.SuicThoughts,
+                                         SuicThoughtsDesc = p.SuicThoughtsDesc,
+                                         SubstanceAbuse = p.SubstanceAbuse,
+                                         SubstanceAbuseDesc = p.SubstanceAbuseDesc,
+                                         SupportSystem = p.SupportSystem,
+                                         Therapy = p.Therapy,
+                                         TherapyDesc = p.TherapyDesc,
+                                         ProblemsDesc = p.ProblemsDesc,
+                                         TreatmentGoals = p.TreatmentGoals
+                                     }).FirstOrDefaultAsync();
+                return Ok(patient);
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+           
+            }
+
+            return BadRequest(new PatientDto());
+
         }
+
 
         [HttpGet]
         [Route("browse-doctors")]
@@ -183,9 +205,16 @@ namespace MediMatch.Server.Controllers
             }
 
             return NoContent();
-
-
         }
 
+
+        public int GetAge(DateTime DOB)
+        {
+            var today = DateTime.Today;
+            int age = today.Year - DOB.Year;
+            // Go back to the year in which the person was born in case of a leap year
+            if (DOB.Date > today.AddYears(-age)) age--;
+            return age;
+        }
     }
 }

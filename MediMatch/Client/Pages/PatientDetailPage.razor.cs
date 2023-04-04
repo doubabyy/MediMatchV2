@@ -10,18 +10,25 @@ namespace MediMatch.Client.Pages
         [Inject]
         public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [Parameter]
-        public string? Id { get; set; }
-
+        public string? Patient_id { get; set; }
         public PatientDto Patient { get; set; }
 
 
         protected override async Task OnInitializedAsync()
         {
-            var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
-            if (UserAuth is not null && UserAuth.IsAuthenticated)
+            try
             {
-                Patient = await Http.GetFromJsonAsync<PatientDto>("api/patient/get-patient");
+                var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
+
+                if (UserAuth is not null && UserAuth.IsAuthenticated)
+                {
+                    Patient = await Http.GetFromJsonAsync<PatientDto>("api/patient/get-patient/" + Patient_id);
+                }
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
+            
         }
     }
 }

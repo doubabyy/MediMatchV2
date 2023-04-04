@@ -17,6 +17,5 @@ namespace MediMatch.Shared
         public string? Specialty { get; set; } = null!;
         public int Rates { get; set; }
         public bool AcceptsInsurance { get; set; }
-
     }
 }

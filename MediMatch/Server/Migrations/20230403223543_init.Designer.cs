@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediMatch.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230403053842_add")]
-    partial class add
+    [Migration("20230403223543_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
