@@ -1,4 +1,4 @@
-﻿@page "/MessagePage"
+﻿@page "/MessagePageDoc"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using MediMatch.Shared
@@ -10,34 +10,6 @@
 
 <PageTitle>Message</PageTitle>
 
- <!-- Add a table on left hand side to show all chats above the table there should be a create new message button left hand side is the chat box itself with the conversation between two users  -->
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .chat-box {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .tight-spacing {
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .tight-spacing-below {
-            margin-top: 0;
-            padding-top: 0;
-        }
-
-    </style>
-</head>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,48 +40,8 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <h2 class="tight-spacing">Past Chats</h2>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Last Message</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in GetMessagesForUserAsync(selectedUser).Result)
-                        {
-                            <tr>
-                                <td>@item.sender.FirstName</td>
-                                <td>@item.message.MessageTxt</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-           <div class="col-md-8">
-                <h1 class="tight-spacing-below">Chat Page</h1>
-                <div class="chat-box">
-                    <ul class="list-group">
-                        @foreach (var message in messages)
-                        {
-                            if (message.MessageFromID == currentUserID)
-                            {
-                                <li class="list-group-item text-right bg-primary text-white">
-                                    @message.MessageTxt
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item">
-                                    @message.MessageTxt
-                                </li>
-                            }
-                        }
-                    </ul>
-                </div>
-                <div class="form-group">
+            <div class="col-md-3">
+                 <div class="form-group">
                     <label for="filter">Select User:</label>
                     <input type="text" class="form-control" @bind="@selectedUser" placeholder="Search User Receiving Message" />
                     <button class="btn btn-primary" @onclick="FetchMessagesForSelectedUser">Add user</button>
@@ -119,31 +51,27 @@
                     <textarea class="form-control" @bind="newMessageText" rows="3"></textarea>
                 </div>
                 <button class="btn btn-primary" @onclick="SendMessage">Send Message</button>
-
-                <h3>Messages with @selectedUser:</h3>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Sender</th>
-                            <th>Message</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (messagesWithSenders != null)
-                        {
-                            foreach (var item in messagesWithSenders)
+           
+            </div>
+           <div class="col-md-8">
+                <h1 class="tight-spacing-below">Messages with @selectedUser</h1>
+                <div class="chat-box">
+                   <table class="table table-borderless">
+                        <tbody>
+                            @foreach (var message in messages)
                             {
-                                <tr>
-                                    <td>@item.sender.FirstName</td>
-                                    <td>@item.message.MessageTxt</td>
+                                <tr class="@((message.MessageFromID == currentUserID) ? "text-right" : "")">
+                                    <td>@message.MessageFromID</td>
+                                    <td class="@((message.MessageFromID == currentUserID) ? "bg-primary text-white" : "")">@message.MessageTxt</td>
                                 </tr>
                             }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+               
             </div>
         </div>
-    </div>
+   </div>
 </body>
 
 
@@ -155,9 +83,7 @@
     private string currentUserID;
     private List<(Message message, ApplicationUserDto sender)> messagesWithSenders;
     private List<Message> messagesForSelectedUser = new List<Message>();
-    public MessagePage()
-    {
-    }
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -237,11 +163,11 @@
     var messagesForUser = messages.Where(m => m.MessageFromID == selectedUser || m.MessageToID == selectedUser).ToList();
     var messagesWithSenders = new List<(Message message, ApplicationUserDto sender)>();
 
-    foreach (var message in messagesForUser)
-    {
-        var sender = await GetUserByIdAsync(message.MessageFromID);
-        messagesWithSenders.Add((message, sender));
-    }
+    //foreach (var message in messagesForUser)
+    //{
+    //    var sender = await GetUserByIdAsync(message.MessageFromID);
+    //    messagesWithSenders.Add((message, sender));
+    //}
 
     return messagesWithSenders;
 }
@@ -257,4 +183,4 @@ private async Task FetchMessagesForSelectedUser()
 
 }
 
-}
+

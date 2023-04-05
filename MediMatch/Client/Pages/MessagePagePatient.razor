@@ -1,0 +1,185 @@
+﻿
+@page "/MessagePagePatient"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using MediMatch.Shared
+@using System.Security.Claims;
+@layout PatientLayout
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>Message</PageTitle>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .chat-box {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .tight-spacing {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .tight-spacing-below {
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                 <div class="form-group">
+                    <label for="filter">Select User:</label>
+                    <input type="text" class="form-control" @bind="@selectedUser" placeholder="Search User Receiving Message" />
+                    <button class="btn btn-primary" @onclick="FetchMessagesForSelectedUser">Add user</button>
+                </div>
+                <div class="form-group">
+                    <label for="newMessage">New message:</label>
+                    <textarea class="form-control" @bind="newMessageText" rows="3"></textarea>
+                </div>
+                <button class="btn btn-primary" @onclick="SendMessage">Send Message</button>
+           
+            </div>
+           <div class="col-md-8">
+                <h1 class="tight-spacing-below">Messages with @selectedUser</h1>
+                <div class="chat-box">
+                   <table class="table table-borderless">
+                        <tbody>
+                            @foreach (var message in messages)
+                            {
+                                <tr class="@((message.MessageFromID == currentUserID) ? "text-right" : "")">
+                                    <td>@message.MessageFromID</td>
+                                    <td class="@((message.MessageFromID == currentUserID) ? "bg-primary text-white" : "")">@message.MessageTxt</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+               
+            </div>
+        </div>
+   </div>
+</body>
+
+
+@code {
+
+    private string selectedUser = "";
+    private string newMessageText = "";
+    private List<Message> messages = new List<Message>();
+    private string currentUserID;
+    private List<(Message message, ApplicationUserDto sender)> messagesWithSenders;
+    private List<Message> messagesForSelectedUser = new List<Message>();
+   
+
+    protected override async Task OnInitializedAsync()
+    {
+        currentUserID = await GetCurrentUserAsync();
+        await FetchMessagesForSelectedUser();
+        messagesWithSenders = await GetMessagesForUserAsync(selectedUser);
+    }
+
+
+    private async Task FetchMessages()
+    {
+        messages = await Http.GetFromJsonAsync<List<Message>>("api/GetMessages");
+    }
+    // send message method 
+    private async Task SendMessage()
+    {
+        if (!string.IsNullOrEmpty(newMessageText) && !string.IsNullOrEmpty(selectedUser))
+        {
+            if (string.IsNullOrEmpty(currentUserID))
+            {
+                Console.WriteLine("Error: currentUserID is empty or null");
+                return;
+            }
+
+
+            var newMessage = new Message { MessageTxt = newMessageText, MessageFromID = currentUserID, MessageToID = selectedUser, MessageDate = DateTime.Now };
+            await Http.PostAsJsonAsync("api/SendMessage", newMessage);
+            messages = await Http.GetFromJsonAsync<List<Message>>($"GetMessagesBetweenUsers/{currentUserID}/{selectedUser}");
+            newMessageText = "";
+            StateHasChanged();
+        }
+    }
+
+    private async void SelectUser(string userId)
+    {
+        selectedUser = userId;
+        await FetchMessagesForSelectedUser();
+    }
+    // method to get current user/ sender name 
+    private async Task<string> GetCurrentUserAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User.Identity;
+        Console.WriteLine(user.Name);
+       
+        return user.Name;
+
+
+    }
+    // get user id method 
+    private async Task<ApplicationUserDto> GetUserByIdAsync(string userId)
+{
+    if (string.IsNullOrEmpty(userId))
+    {
+        return null;
+    }
+
+    try
+    {
+        var user = await Http.GetFromJsonAsync<ApplicationUserDto>($"api/User/GetUserById/{userId}");
+        return user;
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error fetching user: {ex.Message}");
+        return null;
+    }
+}
+// get messages for users method 
+       private async Task<List<(Message message, ApplicationUserDto sender)>> GetMessagesForUserAsync(string selectedUser)
+{
+    if (string.IsNullOrEmpty(selectedUser))
+    {
+        return new List<(Message message, ApplicationUserDto sender)>();
+    }
+
+    var messagesForUser = messages.Where(m => m.MessageFromID == selectedUser || m.MessageToID == selectedUser).ToList();
+    var messagesWithSenders = new List<(Message message, ApplicationUserDto sender)>();
+
+    //foreach (var message in messagesForUser)
+    //{
+    //    var sender = await GetUserByIdAsync(message.MessageFromID);
+    //    messagesWithSenders.Add((message, sender));
+    //}
+
+    return messagesWithSenders;
+}
+//fetch messages for selected users method 
+private async Task FetchMessagesForSelectedUser()
+{
+    if (!string.IsNullOrEmpty(selectedUser))
+    {
+        messagesForSelectedUser = await Http.GetFromJsonAsync<List<Message>>($"api/GetMessagesBetweenUsers/{currentUserID}/{selectedUser}");
+        StateHasChanged();
+    }
+}
+
+}
