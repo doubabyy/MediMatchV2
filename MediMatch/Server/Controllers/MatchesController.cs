@@ -30,11 +30,24 @@ namespace MediMatch.Server.Controllers
         {
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var requests = await (from m in _context.Matches
-                                where m.DoctorId == user.Id
+                                  join d in _context.Users on m.DoctorId equals d.Id
+                                  join p in _context.Users on m.PatientId equals p.Id
+                                  where m.DoctorId == user.Id
                                     && m.Accepted == false
                                     && m.RejectedAt == null
                                 orderby m.RequestedAt descending
-                                select m).ToListAsync();
+                                select new MatchDto
+                                {
+                                    Id = m.Id,
+                                    PatientId = m.PatientId,
+                                    DoctorId = m.DoctorId,
+                                    RequestedAt = m.RequestedAt,
+                                    AcceptedAt = m.AcceptedAt,
+                                    RejectedAt = m.RejectedAt,
+                                    Accepted = m.Accepted,
+                                    PatientName = p.FirstName + " " + p.LastName,
+                                    DoctorName = d.FirstName + " " + d.LastName
+                                }).ToListAsync();
             return Ok(requests);
         }
 
