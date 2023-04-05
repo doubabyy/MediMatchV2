@@ -15,7 +15,6 @@
             <th scope="col">Patient</th>
             <th scope="col">Amount</th>
             <th scope="col">Due Date</th>
-            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -25,7 +24,6 @@
                 <td>@b.PatientName</td>
                 <td>$@b.Amount</td>
                 <td>@b.DueDate.ToString("MM/dd/yyyy")</td>
-                <button @onclick="@(() => MakePayment(b.Bill_Id))">Make Payment</button>
             </tr>
         }
     </tbody>

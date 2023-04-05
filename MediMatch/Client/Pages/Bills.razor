@@ -28,7 +28,7 @@
                 <td>@b.DoctorName</td>
                 <td>$@b.Amount</td>
                 <td>@b.DueDate.ToString("MM/dd/yyyy")</td>
-                <button @onclick="@(() => MakePayment(b.Bill_Id))">Make Payment</button>
+                <button class="btn btn-primary" @onclick="@(() => MakePayment(b.Bill_Id))">Make Payment</button>
             </tr>
         }
     </tbody>

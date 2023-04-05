@@ -25,15 +25,5 @@ namespace MediMatch.Client.Pages
 
         }
 
-        private async void MakePayment(int bill_id)
-        {
-            await Http.PostAsJsonAsync("api/bill/make-payment", bill_id);
-            //await InvokeAsync(() => StateHasChanged());
-            //StateHasChanged();
-            BillsHist = await Http.GetFromJsonAsync<List<BillDisplay>>("api/doctor/get-bills-history");
-            BillsUpcoming = await Http.GetFromJsonAsync<List<BillDisplay>>("api/doctor/get-bills-upcoming");
-            StateHasChanged();
-        }
-
     }
 }

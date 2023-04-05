@@ -41,7 +41,7 @@ namespace MediMatch.Server.Controllers
     }
 
     */
-    [Authorize]
+    [Route("api/message")]
     [ApiController]
     public class MessageController : ControllerBase
     {
@@ -52,6 +52,107 @@ namespace MediMatch.Server.Controllers
             _context = context;
             _userManager = userManager;
         }
+
+        [HttpGet]
+        [Route("get-users")]
+        public async Task<ActionResult<List<ApplicationUserDto>>> GetUsers()
+        {
+            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (user.UserType == "d" || user.UserType == "D")
+            {
+                var myUsers = await (from m in _context.Matches
+                                     join p in _context.Users on m.PatientId equals p.Id
+                                     where m.DoctorId == user.Id
+                                     orderby p.FirstName
+                                     select new ApplicationUserDto
+                                     {
+                                         Id = p.Id,
+                                         FirstName = p.FirstName,
+                                         MiddleInitial = p.MiddleInitial,
+                                         LastName = p.LastName,
+                                         Suffix = p.Suffix,
+                                         DOB = p.DOB,
+                                         Address = p.Address,
+                                         UserType = p.UserType
+                                     }).ToListAsync();
+                return Ok(myUsers);
+            }
+            else
+            {
+                var myUsers = await (from m in _context.Matches
+                                     join p in _context.Users on m.DoctorId equals p.Id
+                                     where m.PatientId == user.Id
+                                     orderby p.FirstName
+                                     select new ApplicationUserDto
+                                     {
+                                         Id = p.Id,
+                                         FirstName = p.FirstName,
+                                         MiddleInitial = p.MiddleInitial,
+                                         LastName = p.LastName,
+                                         Suffix = p.Suffix,
+                                         DOB = p.DOB,
+                                         Address = p.Address,
+                                         UserType = p.UserType
+                                     }).ToListAsync();
+                return Ok(myUsers);
+            }
+
+            return BadRequest();
+            
+        }
+
+        [HttpGet("get-messages/{otherUserId}")]
+        public async Task<ActionResult<IEnumerable<Message>>> GetMessagesWith([FromRoute] string otherUserId)
+        {
+            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            try
+            {
+
+                var messages = await (from m in _context.Messages
+                                      where ((m.MessageFromID == otherUserId) && (m.MessageToID == user.Id))
+                                      || (m.MessageFromID == user.Id && m.MessageToID == otherUserId)
+                                      select m).ToListAsync();
+                return Ok(messages);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return BadRequest(new List<Message>());
+
+        }
+
+        [HttpGet]
+        [Route("get-my-id")]
+        public async Task<ActionResult<string>> GetMyId()
+        {
+            try
+            {
+                var output = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                return Ok(output.Id);
+            }catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            return BadRequest("");
+        }
+
+        [HttpPost]
+        [Route("send-message")]
+        public async Task SendMessage([FromBody] Message newMessage)
+        {
+            try
+            {
+                _context.Messages.Add(newMessage);
+                await _context.SaveChangesAsync();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            
+        }
+        /*
         // GetUserbyId method
         [HttpGet("GetUserById/{id}")]
         public async Task<ActionResult<ApplicationUserDto>> GetUserById(string id)
@@ -149,7 +250,7 @@ namespace MediMatch.Server.Controllers
             Console.WriteLine($"GetCurrentUserId: {user.Id}"); // Debugging
             return user.Id;
         }
-
+        */
 
     }
 

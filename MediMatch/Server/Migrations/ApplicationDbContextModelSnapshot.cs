@@ -409,12 +409,6 @@ namespace MediMatch.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"), 1L, 1);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ApplicationUserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("MessageDate")
                         .HasColumnType("datetime2");
 
@@ -431,10 +425,6 @@ namespace MediMatch.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MessageId");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ApplicationUserId1");
 
                     b.ToTable("Messages");
                 });
@@ -598,17 +588,6 @@ namespace MediMatch.Server.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("MediMatch.Shared.Message", b =>
-                {
-                    b.HasOne("MediMatch.Server.Models.ApplicationUser", null)
-                        .WithMany("MessageFrom")
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("MediMatch.Server.Models.ApplicationUser", null)
-                        .WithMany("MessageTo")
-                        .HasForeignKey("ApplicationUserId1");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -664,10 +643,6 @@ namespace MediMatch.Server.Migrations
                 {
                     b.Navigation("Doctor")
                         .IsRequired();
-
-                    b.Navigation("MessageFrom");
-
-                    b.Navigation("MessageTo");
 
                     b.Navigation("Patient")
                         .IsRequired();

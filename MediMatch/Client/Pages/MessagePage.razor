@@ -4,7 +4,6 @@
 @using MediMatch.Shared
 @using System.Security.Claims;
 @layout DoctorLayout
-@inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize]
 @inject HttpClient Http
 
@@ -69,58 +68,63 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <h2 class="tight-spacing">Past Chats</h2>
+                <h2 class="tight-spacing">Users List</h2>
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>User</th>
-                            <th>Last Message</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in GetMessagesForUserAsync(selectedUser).Result)
+                        @foreach (var myUser in Users)
                         {
                             <tr>
-                                <td>@item.sender.FirstName</td>
-                                <td>@item.message.MessageTxt</td>
+                                <td> @(myUser.FirstName + " " + myUser.LastName)</td>
+                                <button class="btn btn-primary" @onclick="@(() => SelectTextUser(myUser))">Select</button>
                             </tr>
                         }
                     </tbody>
                 </table>
             </div>
+
+            
            <div class="col-md-8">
-                <h1 class="tight-spacing-below">Chat Page</h1>
+                <h1 class="tight-spacing-below">@UserTexting.FirstName</h1>
                 <div class="chat-box">
                     <ul class="list-group">
-                        @foreach (var message in messages)
+                        @foreach (Message message in Messages)
                         {
-                            if (message.MessageFromID == currentUserID)
-                            {
-                                <li class="list-group-item text-right bg-primary text-white">
-                                    @message.MessageTxt
-                                </li>
-                            }
-                            else
+                            if (message.MessageFromID == UserTexting.Id)
                             {
                                 <li class="list-group-item">
                                     @message.MessageTxt
                                 </li>
                             }
+                            else
+                            {
+                                <li class="list-group-item text-right bg-primary text-white">
+                                    @message.MessageTxt
+                                </li>
+                               
+                            }
                         }
                     </ul>
                 </div>
+                @*
                 <div class="form-group">
                     <label for="filter">Select User:</label>
-                    <input type="text" class="form-control" @bind="@selectedUser" placeholder="Search User Receiving Message" />
-                    <button class="btn btn-primary" @onclick="FetchMessagesForSelectedUser">Add user</button>
+                    <input type="text" class="form-control" @bind="@UserTexting" placeholder="Search User Receiving Message" />
+                    <button class="btn btn-primary" @onclick="FetchMessages">Add user</button>
                 </div>
+                *@
                 <div class="form-group">
                     <label for="newMessage">New message:</label>
                     <textarea class="form-control" @bind="newMessageText" rows="3"></textarea>
                 </div>
+                
                 <button class="btn btn-primary" @onclick="SendMessage">Send Message</button>
-
-                <h3>Messages with @selectedUser:</h3>
+               
+                <h3>Messages with @UserTexting:</h3>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -129,13 +133,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (messagesWithSenders != null)
+                        @if (Messages != null)
                         {
-                            foreach (var item in messagesWithSenders)
+                            foreach (var item in Messages)
                             {
                                 <tr>
-                                    <td>@item.sender.FirstName</td>
-                                    <td>@item.message.MessageTxt</td>
+                                    <td>@item.MessageFromID</td>
+                                    <td>@item.MessageToID</td>
                                 </tr>
                             }
                         }
@@ -146,7 +150,7 @@
     </div>
 </body>
 
-
+@*
 @code {
 
     private string selectedUser = "";
@@ -258,3 +262,4 @@ private async Task FetchMessagesForSelectedUser()
 }
 
 }
+*@

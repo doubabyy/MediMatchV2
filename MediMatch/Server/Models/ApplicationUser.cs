@@ -26,8 +26,8 @@ namespace MediMatch.Server.Models
                 UserType = this.UserType
             };
         }
-        public List<Message> MessageTo { get; set; } = null!;
-        public List<Message> MessageFrom { get; set; } = null!;
+        //public List<Message> MessageTo { get; set; } = null!;
+        //public List<Message> MessageFrom { get; set; } = null!;
 
         public Doctor Doctor { get; set; }
         public Patient Patient { get; set; }
