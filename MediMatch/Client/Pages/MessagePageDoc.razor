@@ -1,4 +1,4 @@
-﻿@page "/MessagePage"
+﻿@page "/MessagePageDoc"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using MediMatch.Shared
@@ -9,34 +9,6 @@
 
 <PageTitle>Message</PageTitle>
 
- <!-- Add a table on left hand side to show all chats above the table there should be a create new message button left hand side is the chat box itself with the conversation between two users  -->
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .chat-box {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .tight-spacing {
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .tight-spacing-below {
-            margin-top: 0;
-            padding-top: 0;
-        }
-
-    </style>
-</head>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,6 +39,7 @@
 <body>
     <div class="container">
         <div class="row">
+<<<<<<< HEAD:MediMatch/Client/Pages/MessagePage.razor
             <div class="col-md-4">
                 <h2 class="tight-spacing">Users List</h2>
                 <table class="table table-striped">
@@ -112,6 +85,10 @@
                 </div>
                 @*
                 <div class="form-group">
+=======
+            <div class="col-md-3">
+                 <div class="form-group">
+>>>>>>> 0829875aa74b114c96b5bb1d8a59bbc5501b078e:MediMatch/Client/Pages/MessagePageDoc.razor
                     <label for="filter">Select User:</label>
                     <input type="text" class="form-control" @bind="@UserTexting" placeholder="Search User Receiving Message" />
                     <button class="btn btn-primary" @onclick="FetchMessages">Add user</button>
@@ -123,6 +100,7 @@
                 </div>
                 
                 <button class="btn btn-primary" @onclick="SendMessage">Send Message</button>
+<<<<<<< HEAD:MediMatch/Client/Pages/MessagePage.razor
                
                 <h3>Messages with @UserTexting:</h3>
                 <table class="table table-striped">
@@ -140,14 +118,29 @@
                                 <tr>
                                     <td>@item.MessageFromID</td>
                                     <td>@item.MessageToID</td>
+=======
+           
+            </div>
+           <div class="col-md-8">
+                <h1 class="tight-spacing-below">Messages with @selectedUser</h1>
+                <div class="chat-box">
+                   <table class="table table-borderless">
+                        <tbody>
+                            @foreach (var message in messages)
+                            {
+                                <tr class="@((message.MessageFromID == currentUserID) ? "text-right" : "")">
+                                    <td>@message.MessageFromID</td>
+                                    <td class="@((message.MessageFromID == currentUserID) ? "bg-primary text-white" : "")">@message.MessageTxt</td>
+>>>>>>> 0829875aa74b114c96b5bb1d8a59bbc5501b078e:MediMatch/Client/Pages/MessagePageDoc.razor
                                 </tr>
                             }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+               
             </div>
         </div>
-    </div>
+   </div>
 </body>
 
 @*
@@ -159,9 +152,7 @@
     private string currentUserID;
     private List<(Message message, ApplicationUserDto sender)> messagesWithSenders;
     private List<Message> messagesForSelectedUser = new List<Message>();
-    public MessagePage()
-    {
-    }
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -241,11 +232,11 @@
     var messagesForUser = messages.Where(m => m.MessageFromID == selectedUser || m.MessageToID == selectedUser).ToList();
     var messagesWithSenders = new List<(Message message, ApplicationUserDto sender)>();
 
-    foreach (var message in messagesForUser)
-    {
-        var sender = await GetUserByIdAsync(message.MessageFromID);
-        messagesWithSenders.Add((message, sender));
-    }
+    //foreach (var message in messagesForUser)
+    //{
+    //    var sender = await GetUserByIdAsync(message.MessageFromID);
+    //    messagesWithSenders.Add((message, sender));
+    //}
 
     return messagesWithSenders;
 }
@@ -261,5 +252,9 @@ private async Task FetchMessagesForSelectedUser()
 
 }
 
+<<<<<<< HEAD:MediMatch/Client/Pages/MessagePage.razor
 }
 *@
+=======
+
+>>>>>>> 0829875aa74b114c96b5bb1d8a59bbc5501b078e:MediMatch/Client/Pages/MessagePageDoc.razor
