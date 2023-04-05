@@ -47,7 +47,7 @@ namespace MediMatch.Server.Data
                 .HasForeignKey<Patient>(e => e.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade); 
         }
-        //public DbSet<Message> Messages => Set<Message>();
+        public DbSet<Message> Messages => Set<Message>();
         public DbSet<Bill> Bills => Set<Bill>();
         public DbSet<Doctor> Doctors => Set<Doctor>();
         public DbSet<Match> Matches => Set<Match>();
