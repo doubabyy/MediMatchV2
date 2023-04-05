@@ -7,17 +7,17 @@ namespace MediMatch.Client.Pages
     public partial class ViewRequests
     {
         public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-        public List<Match> Requests { get; set; } = new List<Match>();
+        public List<MatchDto> Requests { get; set; } = new List<MatchDto>();
 
         protected override async Task OnInitializedAsync()
         {
-            Requests = await Http.GetFromJsonAsync<List<Match>>("api/get-requests");
+            Requests = await Http.GetFromJsonAsync<List<MatchDto>>("api/get-requests");
         }
 
         private async Task AcceptRequest(int request_id)
         {
             await Http.PostAsJsonAsync("api/accept-request", request_id);
-            Requests = await Http.GetFromJsonAsync<List<Match>>("api/get-requests");
+            Requests = await Http.GetFromJsonAsync<List<MatchDto>>("api/get-requests");
             StateHasChanged();
         }
 
@@ -25,7 +25,7 @@ namespace MediMatch.Client.Pages
         private async Task RejectRequest(int request_id)
         {
             await Http.PostAsJsonAsync("api/reject-request", request_id);
-            Requests = await Http.GetFromJsonAsync<List<Match>>("api/get-requests");
+            Requests = await Http.GetFromJsonAsync<List<MatchDto>>("api/get-requests");
             StateHasChanged();
         }
     }
