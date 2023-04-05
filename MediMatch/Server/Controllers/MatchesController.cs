@@ -43,11 +43,21 @@ namespace MediMatch.Server.Controllers
         [Route("api/accept-request")]
         public async Task<ActionResult> AcceptRequest([FromBody] int request_id)
         {
-            var myRequest = await _context.Matches.FirstOrDefaultAsync(u => u.Id == request_id);
-            myRequest.Accepted = true;
-            myRequest.AcceptedAt = DateTime.Now;
-            await _context.SaveChangesAsync();
-            return Ok();
+            
+            try
+            {
+                Match myRequest = await _context.Matches.FirstOrDefaultAsync(u => u.Id == request_id);
+                myRequest.Accepted = true;
+                myRequest.AcceptedAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            { 
+                Console.Write(ex.Message);
+                return BadRequest(ex.Message);
+            }
+
         }
         // add a reject request 
         [HttpPost]

@@ -13,7 +13,6 @@ namespace MediMatch.Server.Models
 
         [Key]
         public string ApplicationUserId { get; set; }
-
         public string? Gender { get; set; } = null!;
         public bool DepAnx { get; set; }
 

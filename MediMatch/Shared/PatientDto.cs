@@ -11,6 +11,7 @@ namespace MediMatch.Shared
         public string Id { get; set; }
         public string? FirstName { get; set; }  = null!;
         public string? LastName { get; set; }  = null!;
+        public int Age { get; set; }
         public DateTime DOB { get; set; }
         public string? Gender { get; set; } = null!;
         public bool DepAnx { get; set; }
@@ -24,8 +25,6 @@ namespace MediMatch.Shared
         public string? TherapyDesc { get; set; } = null!;
         public string? ProblemsDesc { get; set; } = null!;
         public string? TreatmentGoals { get; set; } = null!;
-
     }
-
 }
 
