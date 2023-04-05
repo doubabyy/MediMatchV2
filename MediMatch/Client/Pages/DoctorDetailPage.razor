@@ -1,0 +1,14 @@
+﻿@page "/Doctor/{Doctor_id}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@layout PatientLayout
+@inject HttpClient Http
+@using System.Threading;
+
+@Doctor_id
+
+<h3>DoctorDetailPage</h3>
+
+<h1>@Doctor.FirstName</h1>
+<h1>@Doctor.LastName</h1>

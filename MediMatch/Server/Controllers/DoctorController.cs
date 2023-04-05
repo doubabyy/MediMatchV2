@@ -24,6 +24,38 @@ namespace MediMatch.Server.Controllers
 
 
         [HttpGet]
+        [Route("get-doctor/{doctor_id}")]
+        public async Task<ActionResult<DoctorDto?>> GetDoctorDetail([FromRoute] string doctor_id)
+        {
+            try
+            {
+                var doctor = await (from p in _context.Doctors
+                                     join u in _context.Users on p.ApplicationUserId equals u.Id
+                                     where u.Id == doctor_id
+                                     select new DoctorDto
+                                     {
+                                         Id = doctor_id,
+                                         FirstName = u.FirstName,
+                                         LastName = u.LastName,
+                                         Description = p.Description,
+                                         Availability = p.Availability,
+                                         Specialty = p.Specialty,
+                                         Rates = p.Rates,
+                                         AcceptsInsurance = p.AcceptsInsurance
+                                     }).FirstOrDefaultAsync();
+                return Ok(doctor);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return BadRequest(new DoctorDto());
+
+        }
+
+
+        [HttpGet]
         [Route("doctor-profile")]
         public async Task<ActionResult<DoctorDto?>> GetDoctor()
         {
