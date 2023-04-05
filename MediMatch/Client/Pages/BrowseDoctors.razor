@@ -26,7 +26,7 @@
             text-align: left;
         }
     </style>
-</head>>
+</head>
 
 <h3>Browse Doctors</h3>
 
@@ -36,11 +36,10 @@
         <tr>
             <th>Name</th>
             <th>Specialty</th>
-            <th>Description</th>
-            <th>Rating</th>
             <th>Availability</th>
             <th>Rates</th>
-            <th>Actions</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -49,11 +48,10 @@
             <tr>
                 <td>@doctor.FirstName @doctor.LastName</td>
                 <td>@doctor.Specialty</td>
-                <td>@doctor.Description</td>
-                <td>to do</td>
                 <td>@doctor.Availability</td>
                 <td>@doctor.Rates</td>
                 <td><button @onclick="() => SendRequest(doctor.Id)">Send Request</button></td>
+                <td><a href=@("Doctor/" + doctor.Id) target="_blank" rel="noopener noreferrer">View Details</a></td>
             </tr>
         }
     </tbody>

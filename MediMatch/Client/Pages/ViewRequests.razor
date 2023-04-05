@@ -14,6 +14,7 @@
             <th>Patient ID</th>
             <th>Doctor ID</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,7 @@
                 <td>xxx</td>
                 <td>@request.PatientId</td>
                 <td>@request.RequestedAt</td>
+                <td><a href=@("Patient/" + request.PatientId) target="_blank" rel="noopener noreferrer">View Details</a></td>
                 <td><button @onclick="() => AcceptRequest(request.Id)">Accept</button></td>
                  <td><button @onclick="() => RejectRequest(request.Id)">Reject</button></td>
             </tr>

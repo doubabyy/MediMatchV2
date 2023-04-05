@@ -11,7 +11,7 @@ namespace MediMatch.Client.Pages
         public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [Parameter]
         public string? Patient_id { get; set; }
-        public PatientDto Patient { get; set; }
+        public PatientDto Patient { get; set; } = new PatientDto();
 
 
         protected override async Task OnInitializedAsync()

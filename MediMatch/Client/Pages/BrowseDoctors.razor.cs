@@ -25,5 +25,7 @@ namespace MediMatch.Client.Pages
             Doctors = await Http.GetFromJsonAsync<List<DoctorDto>>("api/patient/browse-doctors");
             StateHasChanged();
         }
+
+
     }
 }
