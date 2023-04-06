@@ -23,27 +23,7 @@ namespace MediMatch.Server.Controllers
             _context = context;
             _userManager = userManager;
         }
-        // GetUserbyId method
-        [HttpGet("GetUserById/{id}")]
-        public async Task<ActionResult<ApplicationUserDto>> GetUserById(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var userDto = new ApplicationUserDto
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-
-            };
-
-            return userDto;
-        }
 
 
         // get messages between users method 
