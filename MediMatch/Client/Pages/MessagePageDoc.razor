@@ -40,12 +40,29 @@
 <body>
     <div class="container">
         <div class="row">
+            <div class="col-md-4">
+                <h2 class="tight-spacing">Past Chats</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in matchedUsers)
+                        {
+                            <tr>
+                                <td>@item.FirstName</td>
+                                <button class="btn btn-primary" @onclick="@(() => SelectUser(item))">Select</button>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
             <div class="col-md-3">
-                <div class="form-group">
-                    <label for="filter">Select User:</label>
-                    <input type="text" class="form-control" @bind="@selectedUser" placeholder="Search User Receiving Message" />
-                    <button class="btn btn-primary" @onclick="StateHasChanged">Add user</button>
-                </div>
+                
                 <div class="form-group">
                     <label for="newMessage">New message:</label>
                     <textarea class="form-control" @bind="newMessageText" rows="3"></textarea>
@@ -54,16 +71,32 @@
 
             </div>
             <div class="col-md-8">
-                <h1 class="tight-spacing-below">Messages with @selectedUser</h1>
+                <h1 class="tight-spacing-below">Messages with @(selectedUser.FirstName + " " + selectedUser.LastName)</h1>
                 <div class="chat-box">
                     <table class="table table-borderless">
                         <tbody>
                             @foreach (var message in messages)
                             {
+                                @if (message.MessageFromID == currentUser.Id)
+                                {
+                                    <tr class="text-right">
+                                        <td class = "bg-primary text-white text-right">@message.MessageTxt</td>
+                                        <td>@currentUser.FirstName</td>
+                                    </tr>
+                                } else {
+                                    <tr>
+                                        <td>@selectedUser.FirstName</td>
+                                        <td>@message.MessageTxt</td>
+                                      
+                                    </tr>
+                                }
+                                @*
                                 <tr class="@((message.MessageFromID == currentUserID) ? "text-right" : "")">
-                                    <td>@message.MessageFromID</td>
-                                    <td class="@((message.MessageFromID == currentUserID) ? "bg-primary text-white" : "")">@message.MessageTxt</td>
+                                    @string x= 
+                                    <td>@(GetUsernameById(message.MessageFromID))</td>
+                                    <td class="@((message.MessageFromID == currentUserID) ? "bg-primary text-white text-right" : "")">@message.MessageTxt</td>
                                 </tr>
+                                *@
                             }
                         </tbody>
                     </table>
@@ -77,15 +110,16 @@
 
 @code {
 
-    private string selectedUser = "";
+    private ApplicationUserDto selectedUser = new ApplicationUserDto();
     private string newMessageText = "";
     private List<Message> messages = new List<Message>();
-    private string currentUserID;
-
+    private ApplicationUserDto currentUser;
+    private List<ApplicationUserDto> matchedUsers = new List<ApplicationUserDto>();
 
     protected override async Task OnInitializedAsync()
     {
-        currentUserID = await GetCurrentUserAsync();
+        currentUser = await Http.GetFromJsonAsync<ApplicationUserDto>("GetUser");
+        matchedUsers = await Http.GetFromJsonAsync<List<ApplicationUserDto>>("GetUsers");
         StateHasChanged();
     }
 
@@ -97,37 +131,51 @@
     // send message method
     private async Task SendMessage()
     {
-        if (!string.IsNullOrEmpty(newMessageText) && !string.IsNullOrEmpty(selectedUser))
+        if (!string.IsNullOrEmpty(newMessageText) && selectedUser != null)
         {
-            if (string.IsNullOrEmpty(currentUserID))
+            if (currentUser==null)
             {
                 Console.WriteLine("Error: currentUserID is empty or null");
                 return;
             }
 
-
-            var newMessage = new Message { MessageTxt = newMessageText, MessageFromID = currentUserID, MessageToID = selectedUser, MessageDate = DateTime.Now };
+            var newMessage = new Message { MessageTxt = newMessageText, MessageFromID = currentUser.Id, MessageToID = selectedUser.Id, MessageDate = DateTime.Now };
             await Http.PostAsJsonAsync("api/SendMessage", newMessage);
-            messages = await Http.GetFromJsonAsync<List<Message>>($"GetMessagesBetweenUsers/{currentUserID}/{selectedUser}");
+            messages = await Http.GetFromJsonAsync<List<Message>>($"GetMessagesBetweenUsers/{currentUser.Id}/{selectedUser.Id}");
             newMessageText = "";
             StateHasChanged();
         }
     }
 
-    private async void SelectUser(string userId)
+    private async Task<string> GetUsernameById(string user_id)
     {
-        selectedUser = userId;
-        StateHasChanged();
+        string output = await Http.GetStringAsync("GetUsernameById/" + user_id);
+        return output;
+    }
+
+    private async Task SelectUser(ApplicationUserDto otherUser)
+    {
+        if (otherUser != null)
+        {
+            try{
+                selectedUser = otherUser;
+                messages = await Http.GetFromJsonAsync<List<Message>>($"GetMessagesBetweenUsers/{currentUser.Id}/{selectedUser.Id}");
+                StateHasChanged();
+            } catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+        }
     }
     // method to get current user/ sender name
-    private async Task<string> GetCurrentUserAsync()
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User.Identity;
-        Console.WriteLine(user.Name);
+   // private async Task<string> GetCurrentUserAsync()
+    //{
+        //var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        //var user = authState.User.Identity;
+        //Console.WriteLine(user.Id);
 
-        return user.Name;
-    }
+        //return user.Id;
+    //}
 
 
 
