@@ -44,7 +44,7 @@
                 <div class="form-group">
                     <label for="filter">Select User:</label>
                     <input type="text" class="form-control" @bind="@selectedUser" placeholder="Search User Receiving Message" />
-                    <button class="btn btn-primary" @onclick="FetchMessagesForSelectedUser">Add user</button>
+                    <button class="btn btn-primary" @onclick="StateHasChanged">Add user</button>
                 </div>
                 <div class="form-group">
                     <label for="newMessage">New message:</label>
@@ -81,13 +81,12 @@
     private string newMessageText = "";
     private List<Message> messages = new List<Message>();
     private string currentUserID;
-    private List<Message> messagesForSelectedUser = new List<Message>();
 
 
     protected override async Task OnInitializedAsync()
     {
         currentUserID = await GetCurrentUserAsync();
-        await FetchMessagesForSelectedUser();
+        StateHasChanged();
     }
 
 
@@ -118,7 +117,7 @@
     private async void SelectUser(string userId)
     {
         selectedUser = userId;
-        await FetchMessagesForSelectedUser();
+        StateHasChanged();
     }
     // method to get current user/ sender name
     private async Task<string> GetCurrentUserAsync()
@@ -128,19 +127,9 @@
         Console.WriteLine(user.Name);
 
         return user.Name;
-
-
     }
 
 
-    //fetch messages for selected users method
-    private async Task FetchMessagesForSelectedUser()
-    {
-        if (!string.IsNullOrEmpty(selectedUser))
-        {
-            StateHasChanged();
-        }
-    }
 
 }
 
