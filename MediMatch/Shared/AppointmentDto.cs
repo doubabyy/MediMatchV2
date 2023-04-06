@@ -8,7 +8,8 @@ namespace MediMatch.Shared
 {
     public class AppointmentDto
     {
-        public string AppointmentId { get; set; }
+
+        public string? AppointmentId { get; set; } = null!;
         public string DoctorId { get; set; }
      
         //public string PatientId { get; set; }

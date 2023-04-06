@@ -6,10 +6,39 @@
 @inject HttpClient Http
 @using System.Threading;
 
-@Patient_id
 
-<h3>PatientDetailPage</h3>
 
-<h1>@Patient.FirstName</h1>
-<h1>@Patient.LastName</h1>
-<h1>@Patient.Age</h1>
+<center><h3>Patient Details</h3></center>
+
+<form>
+
+  <label for="name">Patient Name: </label>
+  <input type="text" id="name" name="name" value="@Patient.FirstName @Patient.LastName" readonly><br>
+  <label for="name">DoB: </label>
+  <input type="text" id="name" name="name" value="@Patient.DOB.Date" readonly><br>
+  <label for="name">Age: </label>
+  <input type="text" id="name" name="name" value="@Patient.Age" readonly><br>
+  <label for="name">Gender: </label>
+  <input type="text" id="name" name="name" value="@Patient.Gender" readonly><br>
+  <label for="name">Has patient experienced/is experiencing symptoms of depression or anxiety?: </label>
+  <input type="checkbox" id="name" name="name" value="@Patient.DOB.Date" readonly><br>
+  <label for="name">If yes, duration: </label>
+  <input type="text" id="name" name="name" value="@Patient.DepAnxDesc" readonly><br>
+  <label for="name">Has patient ever had a substance abuse issue? </label>
+  <input type="checkbox" id="name" name="name" value="@Patient.SubstanceAbuse" readonly><br>
+  <label for="name">Details: </label>
+  <input type="text" id="name" name="name" value="@Patient.SubstanceAbuseDesc" readonly><br>
+  <label for="name">Patient's support system to help manage stressful times: </label>
+  <input type="text" id="name" name="name" value="@Patient.SupportSystem" readonly><br>
+  <label for="name">Has patient ever seeked out therapy? </label>
+  <input type="checkbox" id="name" name="name" value="@Patient.Therapy" readonly><br>
+  <label for="name">If yes, patient's experience': </label>
+  <input type="text" id="name" name="name" value="@Patient.TherapyDesc" readonly><br>
+  <label for="name">Description of patient's problems: </label>
+  <input type="text" id="name" name="name" value="@Patient.ProblemsDesc" readonly><br> 
+  <label for="name">Patient's treatment goals: </label>
+  <input type="text" id="name" name="name" value="@Patient.TreatmentGoals" readonly><br>
+
+
+
+</form>

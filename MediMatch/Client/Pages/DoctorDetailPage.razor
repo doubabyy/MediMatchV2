@@ -6,9 +6,22 @@
 @inject HttpClient Http
 @using System.Threading;
 
-@Doctor_id
+<center><h3>Doctor Details</h3></center>
 
-<h3>DoctorDetailPage</h3>
+<form>
 
-<h1>@Doctor.FirstName</h1>
-<h1>@Doctor.LastName</h1>
+  <label for="name">Doctor Name: </label>
+  <input type="text" id="name" name="name" value="@Doctor.FirstName @Doctor.LastName" readonly><br>
+  <label for="name">Doctor's Specialty: </label>
+  <input type="text" id="name" name="name" value="@Doctor.Specialty" readonly><br>
+  <label for="name">Doctor's Qualifications: </label>
+  <input type="text" id="name" name="name" value="@Doctor.Description" readonly><br>
+  <label for="name">Doctor's Availability: </label>
+  <input type="text" id="name" name="name" value="@Doctor.Availability" readonly><br>
+  <label for="name">Doctor's Rates per hour: </label>
+  <input type="text" id="name" name="name" value="@Doctor.Rates" readonly><br>
+  <label for="name">Insurance:  </label>
+  <input type="checkbox" id="name" name="name" value="@Doctor.AcceptsInsurance" readonly><br>
+
+
+</form>

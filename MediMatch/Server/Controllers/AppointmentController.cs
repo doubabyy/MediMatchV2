@@ -79,13 +79,13 @@ namespace MediMatch.Server.Controllers
             try
             {
                 var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                var AptId = await (from a in _context.Appointments
+                /*var AptId = await (from a in _context.Appointments
                               select a.AppointmentId).LastOrDefaultAsync();
                 AptId++;
-                Console.WriteLine(AptId);
+                Console.WriteLine(AptId);*/
                 Appointment NewAppointment = new Appointment()
                 {
-                    AppointmentId = AptId,
+                    //AppointmentId = AptId,
                     DoctorId = NewAppointmentDto.DoctorId,
                     PatientId = user.Id,
                     AppointmentDateStart = NewAppointmentDto.StartTime,
