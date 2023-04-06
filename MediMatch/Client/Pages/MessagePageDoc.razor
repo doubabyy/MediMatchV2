@@ -81,7 +81,6 @@
     private string newMessageText = "";
     private List<Message> messages = new List<Message>();
     private string currentUserID;
-    private List<(Message message, ApplicationUserDto sender)> messagesWithSenders;
     private List<Message> messagesForSelectedUser = new List<Message>();
 
 
@@ -89,7 +88,6 @@
     {
         currentUserID = await GetCurrentUserAsync();
         await FetchMessagesForSelectedUser();
-        messagesWithSenders = await GetMessagesForUserAsync(selectedUser);
     }
 
 
@@ -133,50 +131,13 @@
 
 
     }
-    // get user id method
-    private async Task<ApplicationUserDto> GetUserByIdAsync(string userId)
-    {
-        if (string.IsNullOrEmpty(userId))
-        {
-            return null;
-        }
 
-        try
-        {
-            var user = await Http.GetFromJsonAsync<ApplicationUserDto>($"api/User/GetUserById/{userId}");
-            return user;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error fetching user: {ex.Message}");
-            return null;
-        }
-    }
-    // get messages for users method
-    private async Task<List<(Message message, ApplicationUserDto sender)>> GetMessagesForUserAsync(string selectedUser)
-    {
-        if (string.IsNullOrEmpty(selectedUser))
-        {
-            return new List<(Message message, ApplicationUserDto sender)>();
-        }
 
-        var messagesForUser = messages.Where(m => m.MessageFromID == selectedUser || m.MessageToID == selectedUser).ToList();
-        var messagesWithSenders = new List<(Message message, ApplicationUserDto sender)>();
-
-        //foreach (var message in messagesForUser)
-        //{
-        //    var sender = await GetUserByIdAsync(message.MessageFromID);
-        //    messagesWithSenders.Add((message, sender));
-        //}
-
-        return messagesWithSenders;
-    }
     //fetch messages for selected users method
     private async Task FetchMessagesForSelectedUser()
     {
         if (!string.IsNullOrEmpty(selectedUser))
         {
-            messagesForSelectedUser = await Http.GetFromJsonAsync<List<Message>>($"api/GetMessagesBetweenUsers/{currentUserID}/{selectedUser}");
             StateHasChanged();
         }
     }
