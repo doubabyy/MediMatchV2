@@ -31,14 +31,16 @@ namespace MediMatch.Server.Controllers
         {
             try
             {
+                var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var doctors = await (from u in _context.Users
-                               where u.UserType == "D"
-                               select new DoctorDto
-                               {
-                                   Id = u.Id,
-                                   FirstName = u.FirstName,
-                                   LastName = u.LastName
-                               }).ToListAsync();
+                                     join m in _context.Matches on u.Id equals m.DoctorId
+                                     where m.PatientId == user.Id
+                                     select new DoctorDto
+                                    {
+                                        Id = u.Id,
+                                        FirstName = u.FirstName,
+                                        LastName = u.LastName
+                                    }).ToListAsync();
 
 
                 return Ok(doctors);
@@ -57,7 +59,7 @@ namespace MediMatch.Server.Controllers
         public async Task<ActionResult<List<AppointmentDto>>> GetDoctorAvailability(string id)
         {
             
-            var doctorList = await (from d in _context.Appointments
+            var appointmentList = await (from d in _context.Appointments
                               where d.DoctorId == id
                               select new AppointmentDto
                               { 
@@ -65,7 +67,7 @@ namespace MediMatch.Server.Controllers
                                   EndTime = d.AppointmentDateEnd
                               }).ToListAsync();
 
-            return Ok(doctorList);
+            return Ok(appointmentList);
 
         }
         
@@ -103,9 +105,29 @@ namespace MediMatch.Server.Controllers
             return Ok();
 
         }
-        
-        
+
+        [HttpGet]
+        [Route("get-appointments")]
+        public async Task<ActionResult<List<AppointmentDto>>> GetDoctorAppointments()
+        {
+            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var appointmentList = await (from d in _context.Appointments
+                                         where d.DoctorId == user.Id
+                                         select new AppointmentDto
+                                         {
+                                             StartTime = d.AppointmentDateStart,
+                                             EndTime = d.AppointmentDateEnd
+                                         }).ToListAsync();
+
+            return Ok(appointmentList);
+
+        }
+
+
     }
+
+  
 
 
 }

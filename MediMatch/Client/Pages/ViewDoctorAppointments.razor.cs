@@ -69,11 +69,13 @@ namespace MediMatch.Client.Pages
                     NewAppointment.DoctorId = DoctorId;
                     NewAppointment.StartTime = appointments[newAppt - 1].Start;
                     NewAppointment.EndTime = appointments[newAppt - 1].End;
+                    await scheduler.Reload();
+                    /*
                     var response = await Http.PostAsJsonAsync("api/appointment/new-appointment", NewAppointment);
                     if (response.IsSuccessStatusCode)
                     {
                         await scheduler.Reload();
-                    }
+                    }*/
                     
                 }
             }
