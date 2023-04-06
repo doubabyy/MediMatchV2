@@ -4,6 +4,7 @@
 @using MediMatch.Shared
 @using System.Security.Claims;
 @layout DoctorLayout
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize]
 @inject HttpClient Http
 
@@ -39,111 +40,41 @@
 <body>
     <div class="container">
         <div class="row">
-<<<<<<< HEAD:MediMatch/Client/Pages/MessagePage.razor
-            <div class="col-md-4">
-                <h2 class="tight-spacing">Users List</h2>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var myUser in Users)
-                        {
-                            <tr>
-                                <td> @(myUser.FirstName + " " + myUser.LastName)</td>
-                                <button class="btn btn-primary" @onclick="@(() => SelectTextUser(myUser))">Select</button>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-
-            
-           <div class="col-md-8">
-                <h1 class="tight-spacing-below">@UserTexting.FirstName</h1>
-                <div class="chat-box">
-                    <ul class="list-group">
-                        @foreach (Message message in Messages)
-                        {
-                            if (message.MessageFromID == UserTexting.Id)
-                            {
-                                <li class="list-group-item">
-                                    @message.MessageTxt
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item text-right bg-primary text-white">
-                                    @message.MessageTxt
-                                </li>
-                               
-                            }
-                        }
-                    </ul>
-                </div>
-                @*
-                <div class="form-group">
-=======
             <div class="col-md-3">
-                 <div class="form-group">
->>>>>>> 0829875aa74b114c96b5bb1d8a59bbc5501b078e:MediMatch/Client/Pages/MessagePageDoc.razor
+                <div class="form-group">
                     <label for="filter">Select User:</label>
-                    <input type="text" class="form-control" @bind="@UserTexting" placeholder="Search User Receiving Message" />
-                    <button class="btn btn-primary" @onclick="FetchMessages">Add user</button>
+                    <input type="text" class="form-control" @bind="@selectedUser" placeholder="Search User Receiving Message" />
+                    <button class="btn btn-primary" @onclick="FetchMessagesForSelectedUser">Add user</button>
                 </div>
-                *@
                 <div class="form-group">
                     <label for="newMessage">New message:</label>
                     <textarea class="form-control" @bind="newMessageText" rows="3"></textarea>
                 </div>
-                
                 <button class="btn btn-primary" @onclick="SendMessage">Send Message</button>
-<<<<<<< HEAD:MediMatch/Client/Pages/MessagePage.razor
-               
-                <h3>Messages with @UserTexting:</h3>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Sender</th>
-                            <th>Message</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Messages != null)
-                        {
-                            foreach (var item in Messages)
-                            {
-                                <tr>
-                                    <td>@item.MessageFromID</td>
-                                    <td>@item.MessageToID</td>
-=======
-           
+
             </div>
-           <div class="col-md-8">
+            <div class="col-md-8">
                 <h1 class="tight-spacing-below">Messages with @selectedUser</h1>
                 <div class="chat-box">
-                   <table class="table table-borderless">
+                    <table class="table table-borderless">
                         <tbody>
                             @foreach (var message in messages)
                             {
                                 <tr class="@((message.MessageFromID == currentUserID) ? "text-right" : "")">
                                     <td>@message.MessageFromID</td>
                                     <td class="@((message.MessageFromID == currentUserID) ? "bg-primary text-white" : "")">@message.MessageTxt</td>
->>>>>>> 0829875aa74b114c96b5bb1d8a59bbc5501b078e:MediMatch/Client/Pages/MessagePageDoc.razor
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
-               
+
             </div>
         </div>
-   </div>
+    </div>
 </body>
 
-@*
+
 @code {
 
     private string selectedUser = "";
@@ -152,7 +83,7 @@
     private string currentUserID;
     private List<(Message message, ApplicationUserDto sender)> messagesWithSenders;
     private List<Message> messagesForSelectedUser = new List<Message>();
-    
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -166,7 +97,7 @@
     {
         messages = await Http.GetFromJsonAsync<List<Message>>("api/GetMessages");
     }
-    // send message method 
+    // send message method
     private async Task SendMessage()
     {
         if (!string.IsNullOrEmpty(newMessageText) && !string.IsNullOrEmpty(selectedUser))
@@ -191,70 +122,64 @@
         selectedUser = userId;
         await FetchMessagesForSelectedUser();
     }
-    // method to get current user/ sender name 
+    // method to get current user/ sender name
     private async Task<string> GetCurrentUserAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User.Identity;
         Console.WriteLine(user.Name);
-       
+
         return user.Name;
 
 
     }
-    // get user id method 
+    // get user id method
     private async Task<ApplicationUserDto> GetUserByIdAsync(string userId)
-{
-    if (string.IsNullOrEmpty(userId))
     {
-        return null;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return null;
+        }
+
+        try
+        {
+            var user = await Http.GetFromJsonAsync<ApplicationUserDto>($"api/User/GetUserById/{userId}");
+            return user;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching user: {ex.Message}");
+            return null;
+        }
+    }
+    // get messages for users method
+    private async Task<List<(Message message, ApplicationUserDto sender)>> GetMessagesForUserAsync(string selectedUser)
+    {
+        if (string.IsNullOrEmpty(selectedUser))
+        {
+            return new List<(Message message, ApplicationUserDto sender)>();
+        }
+
+        var messagesForUser = messages.Where(m => m.MessageFromID == selectedUser || m.MessageToID == selectedUser).ToList();
+        var messagesWithSenders = new List<(Message message, ApplicationUserDto sender)>();
+
+        //foreach (var message in messagesForUser)
+        //{
+        //    var sender = await GetUserByIdAsync(message.MessageFromID);
+        //    messagesWithSenders.Add((message, sender));
+        //}
+
+        return messagesWithSenders;
+    }
+    //fetch messages for selected users method
+    private async Task FetchMessagesForSelectedUser()
+    {
+        if (!string.IsNullOrEmpty(selectedUser))
+        {
+            messagesForSelectedUser = await Http.GetFromJsonAsync<List<Message>>($"api/GetMessagesBetweenUsers/{currentUserID}/{selectedUser}");
+            StateHasChanged();
+        }
     }
 
-    try
-    {
-        var user = await Http.GetFromJsonAsync<ApplicationUserDto>($"api/User/GetUserById/{userId}");
-        return user;
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error fetching user: {ex.Message}");
-        return null;
-    }
-}
-// get messages for users method 
-       private async Task<List<(Message message, ApplicationUserDto sender)>> GetMessagesForUserAsync(string selectedUser)
-{
-    if (string.IsNullOrEmpty(selectedUser))
-    {
-        return new List<(Message message, ApplicationUserDto sender)>();
-    }
-
-    var messagesForUser = messages.Where(m => m.MessageFromID == selectedUser || m.MessageToID == selectedUser).ToList();
-    var messagesWithSenders = new List<(Message message, ApplicationUserDto sender)>();
-
-    //foreach (var message in messagesForUser)
-    //{
-    //    var sender = await GetUserByIdAsync(message.MessageFromID);
-    //    messagesWithSenders.Add((message, sender));
-    //}
-
-    return messagesWithSenders;
-}
-//fetch messages for selected users method 
-private async Task FetchMessagesForSelectedUser()
-{
-    if (!string.IsNullOrEmpty(selectedUser))
-    {
-        messagesForSelectedUser = await Http.GetFromJsonAsync<List<Message>>($"api/GetMessagesBetweenUsers/{currentUserID}/{selectedUser}");
-        StateHasChanged();
-    }
 }
 
-}
-
-<<<<<<< HEAD:MediMatch/Client/Pages/MessagePage.razor
-}
-*@
-=======
-
->>>>>>> 0829875aa74b114c96b5bb1d8a59bbc5501b078e:MediMatch/Client/Pages/MessagePageDoc.razor

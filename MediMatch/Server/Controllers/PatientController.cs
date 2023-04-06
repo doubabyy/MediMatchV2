@@ -36,7 +36,7 @@ namespace MediMatch.Server.Controllers
                                          Id = patient_id,
                                          FirstName = u.FirstName,
                                          LastName = u.LastName,
-                                         Age = 10,
+                                         Age = -1,
                                          DOB = u.DOB,
                                          Gender = p.Gender,
                                          DepAnx = p.DepAnx,
@@ -51,6 +51,11 @@ namespace MediMatch.Server.Controllers
                                          ProblemsDesc = p.ProblemsDesc,
                                          TreatmentGoals = p.TreatmentGoals
                                      }).FirstOrDefaultAsync();
+                var today = DateTime.Today;
+                int age = today.Year - patient.DOB.Year;
+                // Go back to the year in which the person was born in case of a leap year
+                if (patient.DOB.Date > today.AddYears(-age)) age--;
+                patient.Age = age;
                 return Ok(patient);
             } catch (Exception ex)
             {
@@ -208,13 +213,5 @@ namespace MediMatch.Server.Controllers
         }
 
 
-        public int GetAge(DateTime DOB)
-        {
-            var today = DateTime.Today;
-            int age = today.Year - DOB.Year;
-            // Go back to the year in which the person was born in case of a leap year
-            if (DOB.Date > today.AddYears(-age)) age--;
-            return age;
-        }
     }
 }

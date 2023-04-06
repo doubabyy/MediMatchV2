@@ -54,6 +54,45 @@ namespace MediMatch.Server.Controllers
 
         }
 
+        [HttpGet]
+        [Route("get-my-patients")]
+        public async Task<ActionResult<List<PatientDto>>> GetMyPatients()
+        {
+            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var patients = await (from p in _context.Patients
+                                    join u in _context.Users on p.ApplicationUserId equals u.Id
+                                    join m in _context.Matches on p.ApplicationUserId equals m.PatientId
+                                  where m.DoctorId == user.Id
+                                    select new PatientDto
+                                    {
+                                        Id = p.ApplicationUserId,
+                                        FirstName = u.FirstName,
+                                        LastName = u.LastName,
+                                        Age = -1,
+                                        DOB = u.DOB,
+                                        Gender = p.Gender,
+                                        DepAnx = p.DepAnx,
+                                        DepAnxDesc = p.DepAnxDesc,
+                                        SuicThoughts = p.SuicThoughts,
+                                        SuicThoughtsDesc = p.SuicThoughtsDesc,
+                                        SubstanceAbuse = p.SubstanceAbuse,
+                                        SubstanceAbuseDesc = p.SubstanceAbuseDesc,
+                                        SupportSystem = p.SupportSystem,
+                                        Therapy = p.Therapy,
+                                        TherapyDesc = p.TherapyDesc,
+                                        ProblemsDesc = p.ProblemsDesc,
+                                        TreatmentGoals = p.TreatmentGoals
+                                    }).ToListAsync();
+            for(int i = 0; i < patients.Count; i++)
+            {
+                var today = DateTime.Today;
+                int age = today.Year - patients[i].DOB.Year;
+                // Go back to the year in which the person was born in case of a leap year
+                if (patients[i].DOB.Date > today.AddYears(-age)) age--;
+                patients[i].Age = age;
+            }
+            return patients;
+        }
 
         [HttpGet]
         [Route("doctor-profile")]
