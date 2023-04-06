@@ -50,17 +50,16 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
             StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
             if (result.Succeeded)
             {
-                
+                await _signInManager.SignInAsync(user, isPersistent: false);
+
                 if (await _userManager.IsInRoleAsync(user, "Doctor"))
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
                     await Task.Delay(2000);
                     return Redirect("~/Doctor-Profile");
 
                 }
                 else if (await _userManager.IsInRoleAsync(user, "Patient"))
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
                     await Task.Delay(2000);
                     return Redirect("~/Patient-Profile");
                 }

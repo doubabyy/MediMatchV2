@@ -1,44 +1,65 @@
 ﻿@page "/ScheduleAppointments"
+@layout PatientLayout
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @attribute [Authorize]
-@inject HttpClient Http
-@layout PatientLayout
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+@using MediMatch.Shared
+@using System.Threading
 
-@inject IJSRuntime JSRuntime
+@inject DialogService DialogService
 
-<h1>Schedule Appointments</h1>
 
-<div class="container">
-    <form>
-        <div class="mb-3">
-            <label for="name" class="form-label">Name:</label>
-            <input type="text" class="form-control" id="name" name="name">
-        </div>
+@*@inject IJSRuntime JSRuntime*@
 
-        <div class="mb-3">
-            <label for="email" class="form-label">Email:</label>
-            <input type="email" class="form-control" id="email" name="email">
-        </div>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+    .form-elemenet {
+        display: inline
+    }
+</style>
+</head>
 
-        <div class="mb-3">
-            <label for="phone" class="form-label">Phone:</label>
-            <input type="tel" class="form-control" id="phone" name="phone">
-        </div>
 
-        <div class="mb-3">
-            <label for="datetime" class="form-label">Appointment Date and Time:</label>
-            <input type="text" class="form-control" id="datetime" name="datetime">
-        </div>
 
-        <div class="mb-3">
-            <label for="reason" class="form-label">Reason for Visit:</label>
-            <textarea class="form-control" id="reason" name="reason"></textarea>
-        </div>
 
-        <button type="submit" class="btn btn-primary">Schedule Appointment</button>
-    </form>
-</div>
+<center><h3> Schedule Appointments </h3> </center>
+<br />
+
+@if (Doctors?.Any() ?? false) 
+{
+
+    
+    <center><div>
+            <form>
+                <div class="form-element">
+                    <label for="name" class="form-label">Select Doctor:</label>   
+                    <select id="Doc" @bind="@DoctorId">
+                        @foreach (var doctor in Doctors)
+                        {
+                            <option value = "@doctor.Id"> @doctor.FirstName @doctor.LastName </option>
+                        }
+                    </select>
+                </div>
+            <center> <button type="submit" class="btn btn-primary" @onclick="@(() => ReqDoctorId())">View Availability </button></center>
+            </form> 
+    </div></center>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@*
 
 @code {
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -47,10 +68,14 @@
         {
             await JSRuntime.InvokeVoidAsync("flatpickr", "#datetime", new
             {
-                enableTime = true,
-                dateFormat = "Y-m-d H:i",
+                enableTime = false,
+                dateFormat = "Y-m-d",
                 minDate = "today"
             });
+
+            
         }
     }
 }
+
+*@

@@ -1,0 +1,30 @@
+﻿@page "/ViewDoctorAppointments/{DoctorId}"
+@layout PatientLayout
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+@using MediMatch.Shared
+@using System.Threading
+
+@inject DialogService DialogService
+
+
+@*@inject IJSRuntime JSRuntime*@
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+    .form-elemenet {
+        display: inline
+    }
+</style>
+</head>
+
+<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="AppointmentData" Data=@appointments StartProperty="Start" EndProperty="End"
+TextProperty="Text" SelectedIndex="2"
+SlotSelect=@OnSlotSelect>  @*AppointmentSelect=@OnAppointmentSelect>*@
+<RadzenMonthView />
+<RadzenYearView />
+</RadzenScheduler>

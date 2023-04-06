@@ -1,0 +1,69 @@
+﻿@page "/AddAppointmentPage"
+@layout PatientLayout
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+@using MediMatch.Shared
+@using System.Threading
+@inject DialogService DialogService
+
+<RadzenTemplateForm TItem="AppointmentData" Data="@model" Submit=@OnSubmit>
+<div class="row" style="margin-bottom: 16px">
+    <div class="col-md-3">
+        <RadzenLabel Text="Text" />
+    </div>
+    <div class="col">
+        <RadzenTextBox @bind-Value="@model.Text" Name="Text" />
+        <RadzenRequiredValidator Text="Patient name is required" Component="Text" />
+    </div>
+</div>
+<div class="row" style="margin-bottom: 16px">
+    <div class="col-md-3">
+        <RadzenLabel Text="Start" />
+    </div>
+    <div class="col">
+        <RadzenDatePicker @bind-Value="@model.Start" Name="Start" ShowTime="true" />
+        
+        <RadzenRequiredValidator Text="Start time is required" Component="Start" />
+    </div>
+</div>
+<div class="row" style="margin-bottom: 16px">
+    <div class="col-md-3">
+        <RadzenLabel Text="End" />
+    </div>
+    <div class="col">
+        <RadzenDatePicker @bind-Value="@model.End" Name="End"  ShowTime="true" />
+        <RadzenRequiredValidator Text="End is required" Component="End"  />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col">
+        <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+    </div>
+</div>
+</RadzenTemplateForm>
+
+
+@code {
+    [Parameter]
+    public DateTime Start { get; set; }
+
+    [Parameter]
+    public DateTime End { get; set; }
+
+    AppointmentData model = new AppointmentData();
+
+    protected override void OnParametersSet()
+    {
+        model.Start = Start;
+        model.End = End;
+    }
+
+    void OnSubmit(AppointmentData model)
+    {
+        DialogService.Close(model);
+    }
+}
