@@ -14,9 +14,8 @@
   <input type="text" id="name" name="name" value="@Doctor.FirstName @Doctor.LastName" readonly><br>
   <label for="name">Doctor's Specialty: </label>
   <input type="text" id="name" name="name" value="@Doctor.Specialty" readonly><br>
-  <label for="name">Doctor's Qualifications: </label>
-  <input type="text" id="name" name="name" value="@Doctor.Description" readonly><br>
-  <label for="name">Doctor's Availability: </label>
+  <label for="qualifications">Doctor's Qualifications: </label> <br />
+    <textarea id="qualifications" name="qualifications" rows="4" cols="50" readonly>@Doctor.Description</textarea><br>  <label for="name">Doctor's Availability: </label>
   <input type="text" id="name" name="name" value="@Doctor.Availability" readonly><br>
   <label for="name">Doctor's Rates per month: </label>
   <input type="text" id="name" name="name" value="@Doctor.Rates" readonly><br>
