@@ -24,6 +24,69 @@ namespace MediMatch.Server.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet("GetUsernameById/{user_id}")]
+        public async Task<ActionResult<string>> GetUsernameById([FromRoute] string user_id)
+        {
+            var myUsername = await (from u in _context.Users
+                                    where u.Id == user_id
+                                    select u.FirstName).FirstOrDefaultAsync();
+            return Ok(myUsername);
+        }
+
+        [HttpGet("GetUsers")]
+        public async Task<ActionResult<List<ApplicationUserDto>>> GetUsers()
+        {
+            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (user.UserType == "d" || user.UserType == "D")
+            {
+                var myUsers = await (from m in _context.Matches
+                                     join p in _context.Users on m.PatientId equals p.Id
+                                     where m.DoctorId == user.Id
+                                     orderby p.FirstName
+                                     select new ApplicationUserDto
+                                     {
+                                         Id = p.Id,
+                                         FirstName = p.FirstName,
+                                         MiddleInitial = p.MiddleInitial,
+                                         LastName = p.LastName,
+                                         Suffix = p.Suffix,
+                                         DOB = p.DOB,
+                                         Address = p.Address,
+                                         UserType = p.UserType
+                                     }).ToListAsync();
+                return Ok(myUsers);
+            }
+            else
+            {
+                var myUsers = await (from m in _context.Matches
+                                     join p in _context.Users on m.DoctorId equals p.Id
+                                     where m.PatientId == user.Id
+                                     orderby p.FirstName
+                                     select new ApplicationUserDto
+                                     {
+                                         Id = p.Id,
+                                         FirstName = p.FirstName,
+                                         MiddleInitial = p.MiddleInitial,
+                                         LastName = p.LastName,
+                                         Suffix = p.Suffix,
+                                         DOB = p.DOB,
+                                         Address = p.Address,
+                                         UserType = p.UserType
+                                     }).ToListAsync();
+                return Ok(myUsers);
+            }
+
+            return BadRequest();
+
+        }
+
+        [HttpGet("GetUser")]
+        public async Task<ActionResult<String>> GetUserId()
+        {
+            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return Ok(user);
+        }
+
 
 
         // get messages between users method 

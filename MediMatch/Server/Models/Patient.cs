@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using MediMatch.Shared;
 
 
 namespace MediMatch.Server.Models
@@ -32,8 +33,10 @@ namespace MediMatch.Server.Models
         public string? TreatmentGoals { get; set; } = null!;
 
         public ApplicationUser ApplicationUser { get; set; }
+        public List<Appointment> Appointments { get; set; }
+        public List<Bill> Bills { get; set; }  
 
-
+        public List<Match> Matches { get; set; }
 
     }
 }

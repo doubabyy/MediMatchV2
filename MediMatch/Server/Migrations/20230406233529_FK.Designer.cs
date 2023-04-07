@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediMatch.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230405215010_reset")]
-    partial class reset
+    [Migration("20230406233529_FK")]
+    partial class FK
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -341,13 +341,15 @@ namespace MediMatch.Server.Migrations
 
                     b.Property<string>("DoctorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PatientId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AppointmentId");
+
+                    b.HasIndex("DoctorId");
 
                     b.ToTable("Appointments");
                 });
@@ -428,6 +430,34 @@ namespace MediMatch.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Matches");
+                });
+
+            modelBuilder.Entity("MediMatch.Shared.Message", b =>
+                {
+                    b.Property<int>("MessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"), 1L, 1);
+
+                    b.Property<DateTime>("MessageDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MessageFromID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MessageToID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MessageTxt")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MessageId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -589,6 +619,15 @@ namespace MediMatch.Server.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("MediMatch.Shared.Appointment", b =>
+                {
+                    b.HasOne("MediMatch.Server.Models.Doctor", null)
+                        .WithMany("Appointments")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -647,6 +686,11 @@ namespace MediMatch.Server.Migrations
 
                     b.Navigation("Patient")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MediMatch.Server.Models.Doctor", b =>
+                {
+                    b.Navigation("Appointments");
                 });
 #pragma warning restore 612, 618
         }

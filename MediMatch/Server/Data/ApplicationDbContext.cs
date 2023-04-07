@@ -34,7 +34,6 @@ namespace MediMatch.Server.Data
                 .HasForeignKey<Doctor>(e => e.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            
             builder.Entity<Patient>().ToTable("Patients");
             builder.Entity<Patient>(e =>
             {
