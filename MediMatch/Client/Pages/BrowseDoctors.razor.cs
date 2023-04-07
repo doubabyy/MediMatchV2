@@ -9,13 +9,15 @@ namespace MediMatch.Client.Pages
 {
     public partial class BrowseDoctors
     {
+
+        //public IDoctorRepository DoctorRepository { get; set; }
         [Inject]
-        public IDoctorRepository DoctorRepository { get; set; }
         public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         public List<DoctorDto> Doctors = new List<DoctorDto>();
         protected override async Task OnInitializedAsync()
         {
             var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
+            bool x = (UserAuth is not null && UserAuth.IsAuthenticated);
             if (UserAuth is not null && UserAuth.IsAuthenticated)
             {
                 Doctors = await Http.GetFromJsonAsync<List<DoctorDto>>("api/patient/browse-doctors");

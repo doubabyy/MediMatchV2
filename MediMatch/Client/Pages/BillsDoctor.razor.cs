@@ -9,17 +9,19 @@ namespace MediMatch.Client.Pages
     public partial class BillsDoctor
     {
         //[Inject]
-       //public HttpClient Http { get; set; } 
+        //public HttpClient Http { get; set; } 
+
+        //public IUserBillsRepository UserBillsRepository { get; set; }
         [Inject]
-        public IUserBillsRepository UserBillsRepository { get; set; }
         public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         public List<BillDisplay> BillsHist { get; set; } = new List<BillDisplay>();
         public List<BillDisplay> BillsUpcoming { get; set; } = new List<BillDisplay>();
         //public HttpClient PublicHttpClient => Http;
 
-        public async Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
             var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
+            bool x = (UserAuth is not null && UserAuth.IsAuthenticated);
             if (UserAuth is not null && UserAuth.IsAuthenticated)
             {
                 BillsHist = await Http.GetFromJsonAsync<List<BillDisplay>>("api/doctor/get-bills-history");
