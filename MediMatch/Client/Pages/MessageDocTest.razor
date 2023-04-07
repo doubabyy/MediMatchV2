@@ -1,14 +1,13 @@
-﻿@page "/MessagePagePatient"
+﻿@page "/MessageDocTest"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using MediMatch.Shared
 @using System.Security.Claims;
-@layout PatientLayout
+@layout DoctorLayout
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize]
 @inject HttpClient Http
 
-<PageTitle>Message</PageTitle>
 <PageTitle>Message</PageTitle>
 
 <head>
@@ -17,23 +16,25 @@
     <title>Chat </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .chat-box {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
+        .chat {
+            background-color: #f2f2f2;
             padding: 10px;
-            border-radius: 5px;
         }
 
-        .tight-spacing {
-            margin-bottom: 0;
-            padding-bottom: 0;
+        .message {
+            background-color: #89CFF0;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
         }
 
-        .tight-spacing-below {
-            margin-top: 0;
-            padding-top: 0;
+        .sender {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .content {
+            margin: 0;
         }
 
     </style>
@@ -69,8 +70,24 @@
                     <textarea class="form-control" @bind="newMessageText" rows="3"></textarea>
                 </div>
                 <button class="btn btn-primary" @onclick="SendMessage">Send Message</button>
-
             </div>
+
+            <div class="chat">
+                <div class="message">
+                    <p class="sender">John</p>
+                    <p class="content">Hey, how's it going?</p>
+                </div>
+                <div class="message">
+                    <p class="sender">Jane</p>
+                    <p class="content">Not bad, thanks. How about you?</p>
+                </div>
+                <div class="message">
+                    <p class="sender">John</p>
+                    <p class="content">Pretty good, just busy with work.</p>
+                </div>
+            </div>
+
+
             <div class="col-md-8">
                 <h1 class="tight-spacing-below">Messages with @(selectedUser.FirstName + " " + selectedUser.LastName)</h1>
                 <div class="chat-box">
@@ -93,13 +110,6 @@
 
                                     </tr>
                                 }
-                                @*
-                            <tr class="@((message.MessageFromID == currentUserID) ? "text-right" : "")">
-                            @string x=
-                            <td>@(GetUsernameById(message.MessageFromID))</td>
-                            <td class="@((message.MessageFromID == currentUserID) ? "bg-primary text-white text-right" : "")">@message.MessageTxt</td>
-                            </tr>
-                            *@
                             }
                         </tbody>
                     </table>
@@ -172,15 +182,6 @@
             }
         }
     }
-    // method to get current user/ sender name
-    // private async Task<string> GetCurrentUserAsync()
-    //{
-    //var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-    //var user = authState.User.Identity;
-    //Console.WriteLine(user.Id);
-
-    //return user.Id;
-    //}
 
 
 

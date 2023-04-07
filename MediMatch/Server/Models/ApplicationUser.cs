@@ -31,5 +31,6 @@ namespace MediMatch.Server.Models
 
         public Doctor Doctor { get; set; }
         public Patient Patient { get; set; }
+        public List<Message> Messages { get; set; }
     }
 }

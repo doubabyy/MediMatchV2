@@ -13,7 +13,9 @@ namespace MediMatch.Shared
         public int Amount { get; set; }
         public DateTime DueDate { get; set; }
         public string PaymentType { get; set; }
+        [ForeignKey("Patients")]
         public string PatientId { get; set; }
+        [ForeignKey("Doctors")]
         public string DoctorId { get; set; }
         public bool Paid { get; set; }
     }
