@@ -9,9 +9,11 @@ namespace MediMatch.Shared
     public class AppointmentDto
     {
 
-        public string? AppointmentId { get; set; } = null!;
+        public int? AppointmentId { get; set; } = null!;
         public string DoctorId { get; set; }
-     
+        public string? DoctorFirstName { get; set; } = null!;
+        public string? DoctorLastName { get; set; } = null!;
+
         //public string PatientId { get; set; }
         //public DateTime AppointmentDate { get; set; }
         public DateTime StartTime { get; set; }

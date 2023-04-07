@@ -79,13 +79,9 @@ namespace MediMatch.Server.Controllers
             try
             {
                 var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                /*var AptId = await (from a in _context.Appointments
-                              select a.AppointmentId).LastOrDefaultAsync();
-                AptId++;
-                Console.WriteLine(AptId);*/
                 Appointment NewAppointment = new Appointment()
                 {
-                    //AppointmentId = AptId,
+                    
                     DoctorId = NewAppointmentDto.DoctorId,
                     PatientId = user.Id,
                     AppointmentDateStart = NewAppointmentDto.StartTime,
@@ -122,6 +118,23 @@ namespace MediMatch.Server.Controllers
 
             return Ok(appointmentList);
 
+        }
+
+        [HttpGet]
+        [Route("view-patient-appointments")]
+        public async Task<ActionResult<List<AppointmentDto>>> ViewPatientAppointments()
+        {
+            var appointmentList = await (from a in _context.Appointments
+                                         join d in _context.Users on
+                                         a.DoctorId equals d.Id
+                                         select new AppointmentDto
+                                         {
+                                             DoctorFirstName = d.FirstName,
+                                             DoctorLastName = d.LastName,
+                                             StartTime = a.AppointmentDateStart,
+                                             EndTime = a.AppointmentDateEnd
+                                         }).ToListAsync();
+            return appointmentList;
         }
 
 

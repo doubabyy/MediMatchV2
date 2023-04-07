@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediMatch.Client", "MediMat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediMatch.Shared", "MediMatch\Shared\MediMatch.Shared.csproj", "{48CD1C52-CF3C-4D2F-81C2-3A356D0AA218}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediMatch.Client.Test", "MediMatch.Client.Test\MediMatch.Client.Test.csproj", "{1F6D3909-F7E3-4DFA-89D2-50C979A3ED37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediMatch.Client.Test", "MediMatch.Client.Test\MediMatch.Client.Test.csproj", "{1F6D3909-F7E3-4DFA-89D2-50C979A3ED37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
