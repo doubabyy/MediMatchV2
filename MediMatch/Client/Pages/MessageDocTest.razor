@@ -1,4 +1,4 @@
-﻿@page "/MessagePageDoc"
+﻿@page "/MessageDocTest"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using MediMatch.Shared
@@ -21,15 +21,8 @@
             padding: 10px;
         }
 
-        .message-send {
+        .message {
             background-color: #89CFF0;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-        }
-
-        .message-receive {
-            background-color: #90EE90;
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 10px;
@@ -39,16 +32,17 @@
             font-weight: bold;
             margin-bottom: 5px;
         }
-
+        
         .textcontent {
             margin: 0px;
         }
+
     </style>
 </head>
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <h2 class="tight-spacing">Past Chats</h2>
                 <table class="table table-striped">
                     <thead>
@@ -60,7 +54,7 @@
                         @foreach (var item in matchedUsers)
                         {
                             <tr>
-                                <td>@(item.FirstName + " " + item.LastName)</td>
+                                <td>@item.FirstName</td>
                                 <button class="btn btn-primary" @onclick="@(() => SelectUser(item))">Select</button>
                             </tr>
                         }
@@ -73,7 +67,7 @@
                 <div class="chat">
                     @foreach (var message in messages)
                     {
-                        <div class=@((message.MessageFromID == currentUser.Id) ? "message-send" : "message-receive")>
+                        <div class="message">
                             <p class="sender">@((message.MessageFromID == currentUser.Id) ? currentUser.FirstName : selectedUser.FirstName)</p>
                             <p class="textcontent">@message.MessageTxt</p>
                         </div>
@@ -88,12 +82,15 @@
                 </div>
                 <button class="btn btn-primary" @onclick="SendMessage">Send Message</button>
             </div>
+
+
         </div>
     </div>
 </body>
 
 
 @code {
+
     private ApplicationUserDto selectedUser = new ApplicationUserDto();
     private string newMessageText = "";
     private List<Message> messages = new List<Message>();
@@ -107,6 +104,7 @@
         StateHasChanged();
     }
 
+
     private async Task FetchMessages()
     {
         messages = await Http.GetFromJsonAsync<List<Message>>("api/GetMessages");
@@ -116,6 +114,12 @@
     {
         if (!string.IsNullOrEmpty(newMessageText) && selectedUser != null)
         {
+            if (currentUser == null)
+            {
+                Console.WriteLine("Error: currentUserID is empty or null");
+                return;
+            }
+
             var newMessage = new Message { MessageTxt = newMessageText, MessageFromID = currentUser.Id, MessageToID = selectedUser.Id, MessageDate = DateTime.Now };
             await Http.PostAsJsonAsync("api/SendMessage", newMessage);
             messages = await Http.GetFromJsonAsync<List<Message>>($"GetMessagesBetweenUsers/{currentUser.Id}/{selectedUser.Id}");
@@ -146,5 +150,8 @@
             }
         }
     }
+
+
+
 }
 

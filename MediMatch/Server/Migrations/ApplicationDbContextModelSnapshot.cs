@@ -339,13 +339,17 @@ namespace MediMatch.Server.Migrations
 
                     b.Property<string>("DoctorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PatientId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("AppointmentId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Appointments");
                 });
@@ -374,7 +378,7 @@ namespace MediMatch.Server.Migrations
 
                     b.Property<string>("DoctorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
@@ -384,13 +388,17 @@ namespace MediMatch.Server.Migrations
 
                     b.Property<string>("PatientId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PaymentType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Bill_Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Bills");
                 });
@@ -411,11 +419,11 @@ namespace MediMatch.Server.Migrations
 
                     b.Property<string>("DoctorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PatientId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("RejectedAt")
                         .HasColumnType("datetime2");
@@ -424,6 +432,10 @@ namespace MediMatch.Server.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Matches");
                 });
@@ -615,6 +627,51 @@ namespace MediMatch.Server.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("MediMatch.Shared.Appointment", b =>
+                {
+                    b.HasOne("MediMatch.Server.Models.Doctor", null)
+                        .WithMany("Appointments")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediMatch.Server.Models.Patient", null)
+                        .WithMany("Appointments")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MediMatch.Shared.Bill", b =>
+                {
+                    b.HasOne("MediMatch.Server.Models.Doctor", null)
+                        .WithMany("Bills")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediMatch.Server.Models.Patient", null)
+                        .WithMany("Bills")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MediMatch.Shared.Match", b =>
+                {
+                    b.HasOne("MediMatch.Server.Models.Doctor", null)
+                        .WithMany("Matches")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediMatch.Server.Models.Patient", null)
+                        .WithMany("Matches")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -673,6 +730,24 @@ namespace MediMatch.Server.Migrations
 
                     b.Navigation("Patient")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MediMatch.Server.Models.Doctor", b =>
+                {
+                    b.Navigation("Appointments");
+
+                    b.Navigation("Bills");
+
+                    b.Navigation("Matches");
+                });
+
+            modelBuilder.Entity("MediMatch.Server.Models.Patient", b =>
+                {
+                    b.Navigation("Appointments");
+
+                    b.Navigation("Bills");
+
+                    b.Navigation("Matches");
                 });
 #pragma warning restore 612, 618
         }

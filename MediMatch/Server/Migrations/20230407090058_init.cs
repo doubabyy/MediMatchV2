@@ -56,27 +56,6 @@ namespace MediMatch.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bills",
-                columns: table => new
-                {
-                    Bill_Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Bill_details = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date_received = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CardNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PatientId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DoctorId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Paid = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bills", x => x.Bill_Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DeviceCodes",
                 columns: table => new
                 {
@@ -111,24 +90,6 @@ namespace MediMatch.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Keys", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Matches",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DoctorId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RequestedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AcceptedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RejectedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Accepted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Matches", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -324,6 +285,107 @@ namespace MediMatch.Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    AppointmentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PatientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AppointmentDateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppointmentDateEnd = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.AppointmentId);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "ApplicationUserId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "ApplicationUserId",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bills",
+                columns: table => new
+                {
+                    Bill_Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Bill_details = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date_received = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CardNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PatientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Paid = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bills", x => x.Bill_Id);
+                    table.ForeignKey(
+                        name: "FK_Bills_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "ApplicationUserId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bills_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "ApplicationUserId",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Matches",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PatientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RequestedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AcceptedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RejectedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Accepted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Matches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Matches_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "ApplicationUserId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Matches_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "ApplicationUserId",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_DoctorId",
+                table: "Appointments",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_PatientId",
+                table: "Appointments",
+                column: "PatientId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -364,6 +426,16 @@ namespace MediMatch.Server.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Bills_DoctorId",
+                table: "Bills",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bills_PatientId",
+                table: "Bills",
+                column: "PatientId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DeviceCodes_DeviceCode",
                 table: "DeviceCodes",
                 column: "DeviceCode",
@@ -378,6 +450,16 @@ namespace MediMatch.Server.Migrations
                 name: "IX_Keys_Use",
                 table: "Keys",
                 column: "Use");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_DoctorId",
+                table: "Matches",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_PatientId",
+                table: "Matches",
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_ConsumedTime",
@@ -403,6 +485,9 @@ namespace MediMatch.Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Appointments");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -424,9 +509,6 @@ namespace MediMatch.Server.Migrations
                 name: "DeviceCodes");
 
             migrationBuilder.DropTable(
-                name: "Doctors");
-
-            migrationBuilder.DropTable(
                 name: "Keys");
 
             migrationBuilder.DropTable(
@@ -436,13 +518,16 @@ namespace MediMatch.Server.Migrations
                 name: "Messages");
 
             migrationBuilder.DropTable(
-                name: "Patients");
-
-            migrationBuilder.DropTable(
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Doctors");
+
+            migrationBuilder.DropTable(
+                name: "Patients");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
