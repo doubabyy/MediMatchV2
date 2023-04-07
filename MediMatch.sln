@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediMatch.Shared", "MediMat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediMatch.Client.Test", "MediMatch.Client.Test\MediMatch.Client.Test.csproj", "{1F6D3909-F7E3-4DFA-89D2-50C979A3ED37}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MediMatchDB", "MediMatchDB\MediMatchDB.sqlproj", "{712A1EC8-EE02-4A59-9810-663525D6AB00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,12 @@ Global
 		{1F6D3909-F7E3-4DFA-89D2-50C979A3ED37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F6D3909-F7E3-4DFA-89D2-50C979A3ED37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F6D3909-F7E3-4DFA-89D2-50C979A3ED37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{712A1EC8-EE02-4A59-9810-663525D6AB00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{712A1EC8-EE02-4A59-9810-663525D6AB00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{712A1EC8-EE02-4A59-9810-663525D6AB00}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{712A1EC8-EE02-4A59-9810-663525D6AB00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{712A1EC8-EE02-4A59-9810-663525D6AB00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{712A1EC8-EE02-4A59-9810-663525D6AB00}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

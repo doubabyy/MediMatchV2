@@ -2,12 +2,15 @@
 using Microsoft.AspNetCore.Components;
 using MediMatch.Shared;
 using System.Net.Http.Json;
+using MediMatch.Client.HttpRepository;
+
 
 namespace MediMatch.Client.Pages
 {
     public partial class BrowseDoctors
     {
         [Inject]
+        public IDoctorRepository DoctorRepository { get; set; }
         public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         public List<DoctorDto> Doctors = new List<DoctorDto>();
         protected override async Task OnInitializedAsync()
