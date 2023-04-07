@@ -1,11 +1,13 @@
-﻿@page "/AdminPage"
+﻿@page "/Admin/AdminPage"
+
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @attribute [Authorize]
-@layout PatientLayout
+@layout AdminLayout
 @inject HttpClient Http
 @using System.Threading;
 
+@*
 <h2>AdminPage</h2>
 
 
@@ -60,3 +62,4 @@
 </table>
 
 
+*@

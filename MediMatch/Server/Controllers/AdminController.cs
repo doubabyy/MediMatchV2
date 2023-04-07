@@ -9,11 +9,14 @@ using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 using System.Drawing.Text;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace MediMatch.Server.Controllers
 {
     [Route("api/admin")]
     [ApiController]
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -60,7 +63,7 @@ namespace MediMatch.Server.Controllers
 
         [HttpGet]
         [Route("get-patients")]
-        public async Task<ActionResult<List<DoctorDto>>> GetPatients()
+        public async Task<ActionResult<List<PatientDto>>> GetPatients()
         {
 
             try
@@ -93,58 +96,170 @@ namespace MediMatch.Server.Controllers
                 Console.WriteLine(ex.ToString());
             }
             return NotFound();
-
         }
 
         [HttpPost]
-        [Route("api/delete-user")]
-        public async Task<ActionResult> RemoveMovie([FromBody] string patient_id)
+        [Route("delete-user")]
+        public async Task<ActionResult> RemoveUser([FromBody] string patient_id)
         {
-            var myPatient = (from u in _context.Users
+            var myPatient = await (from u in _context.Users
                              where u.Id == patient_id
-                             select u).FirstOrDefault();
+                             select u).FirstOrDefaultAsync();
 
             _context.Users.Remove(myPatient);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("get-bills-history")]
+        public async Task<ActionResult<List<BillDisplay>>> GetBillsHistory()
+        {
+            var bills = await (from p in _context.Users
+                               join b in _context.Bills on p.Id equals b.PatientId
+                               join d in _context.Users on b.DoctorId equals d.Id
+                               where b.Paid == true
+                               orderby b.Date_received descending
+                               select new BillDisplay
+                               {
+                                   Bill_Id = b.Bill_Id,
+                                   Date_received = b.Date_received,
+                                   Amount = b.Amount,
+                                   DueDate = b.DueDate,
+                                   PatientId = b.PatientId,
+                                   PatientName = p.FirstName,
+                                   DoctorId = b.DoctorId,
+                                   DoctorName = d.FirstName,
+                                   Paid = b.Paid
+                               }).ToListAsync();
+            return Ok(bills);
+        }
+
+        [HttpGet]
+        [Route("get-bills-upcoming")]
+        public async Task<ActionResult<List<BillDisplay>>> GetBillsUpcoming()
+        {
+            var bills = await (from p in _context.Users
+                               join b in _context.Bills on p.Id equals b.PatientId
+                               join d in _context.Users on b.DoctorId equals d.Id
+                               where b.Paid == false
+                               orderby b.Date_received descending
+                               select new BillDisplay
+                               {
+                                   Bill_Id = b.Bill_Id,
+                                   Date_received = b.Date_received,
+                                   Amount = b.Amount,
+                                   DueDate = b.DueDate,
+                                   PatientId = b.PatientId,
+                                   PatientName = p.FirstName,
+                                   DoctorId = b.DoctorId,
+                                   DoctorName = d.FirstName,
+                                   Paid = b.Paid
+                               }).ToListAsync();
+            return Ok(bills);
         }
 
         [HttpPost]
-        [Route("new-appointment")]
-        public async Task<IActionResult> AddNewAppointment([FromBody] AppointmentDto NewAppointmentDto)
+        [Route("delete-bill")]
+        public async Task<ActionResult> DeleteBill([FromBody] int bill_id)
         {
-            try
-            {
-                var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                /*var AptId = await (from a in _context.Appointments
-                              select a.AppointmentId).LastOrDefaultAsync();
-                AptId++;
-                Console.WriteLine(AptId);*/
-                Appointment NewAppointment = new Appointment()
-                {
-                    //AppointmentId = AptId,
-                    DoctorId = NewAppointmentDto.DoctorId,
-                    PatientId = user.Id,
-                    AppointmentDateStart = NewAppointmentDto.StartTime,
-                    AppointmentDateEnd = NewAppointmentDto.EndTime
+            var myBill = await (from u in _context.Bills
+                             where u.Bill_Id == bill_id
+                             select u).FirstOrDefaultAsync();
 
-                };
-
-                _context.Appointments.Add(NewAppointment);
-                await _context.SaveChangesAsync();
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+            _context.Bills.Remove(myBill);
+            await _context.SaveChangesAsync();
             return Ok();
-
         }
 
 
+        [HttpGet]
+        [Route("get-accepted-requests")]
+        public async Task<ActionResult<List<MatchDto>>> GetAcceptedRequests()
+        {
+            var requests = await (from m in _context.Matches
+                                  join d in _context.Users on m.DoctorId equals d.Id
+                                  join p in _context.Users on m.PatientId equals p.Id
+                                  where m.Accepted == true
+                                    && m.RejectedAt == null
+                                  orderby m.RequestedAt descending
+                                  select new MatchDto
+                                  {
+                                      Id = m.Id,
+                                      PatientId = m.PatientId,
+                                      DoctorId = m.DoctorId,
+                                      RequestedAt = m.RequestedAt,
+                                      AcceptedAt = m.AcceptedAt,
+                                      RejectedAt = m.RejectedAt,
+                                      Accepted = m.Accepted,
+                                      PatientName = p.FirstName + " " + p.LastName,
+                                      DoctorName = d.FirstName + " " + d.LastName
+                                  }).ToListAsync();
+            return Ok(requests);
+        }
 
+        [HttpGet]
+        [Route("get-rejected-requests")]
+        public async Task<ActionResult<List<MatchDto>>> GetRejectedRequests()
+        {
+            var requests = await (from m in _context.Matches
+                                  join d in _context.Users on m.DoctorId equals d.Id
+                                  join p in _context.Users on m.PatientId equals p.Id
+                                  where m.Accepted == false
+                                    && m.RejectedAt != null
+                                  orderby m.RequestedAt descending
+                                  select new MatchDto
+                                  {
+                                      Id = m.Id,
+                                      PatientId = m.PatientId,
+                                      DoctorId = m.DoctorId,
+                                      RequestedAt = m.RequestedAt,
+                                      AcceptedAt = m.AcceptedAt,
+                                      RejectedAt = m.RejectedAt,
+                                      Accepted = m.Accepted,
+                                      PatientName = p.FirstName + " " + p.LastName,
+                                      DoctorName = d.FirstName + " " + d.LastName
+                                  }).ToListAsync();
+            return Ok(requests);
+        }
+
+        [HttpGet]
+        [Route("gpr")]
+        public async Task<ActionResult<List<MatchDto>>> GetPendingRequests()
+        {
+            var requests = await (from m in _context.Matches
+                                  join d in _context.Users on m.DoctorId equals d.Id
+                                  join p in _context.Users on m.PatientId equals p.Id
+                                  where m.Accepted == false
+                                    && m.RejectedAt == null
+                                  orderby m.RequestedAt descending
+                                  select new MatchDto
+                                  {
+                                      Id = m.Id,
+                                      PatientId = m.PatientId,
+                                      DoctorId = m.DoctorId,
+                                      RequestedAt = m.RequestedAt,
+                                      AcceptedAt = m.AcceptedAt,
+                                      RejectedAt = m.RejectedAt,
+                                      Accepted = m.Accepted,
+                                      PatientName = p.FirstName + " " + p.LastName,
+                                      DoctorName = d.FirstName + " " + d.LastName
+                                  }).ToListAsync();
+            return Ok(requests);
+        }
+
+        [HttpPost]
+        [Route("delete-match")]
+        public async Task<ActionResult> DeleteMatch([FromBody] int match_id)
+        {
+            var myMatch = await (from u in _context.Matches
+                                where u.Id == match_id
+                                select u).FirstOrDefaultAsync();
+
+            _context.Matches.Remove(myMatch);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
     }
 
 

@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@layout AdminLayout
+@inject HttpClient Http
+@using System.Threading;
+@page "/Admin/Doctors"
+
+<h2>Manage Doctors</h2>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in DoctorsList)
+        {
+            <tr>
+                <td>@b.Id</td>
+                <td>@(b.FirstName + " " + b.LastName)</td>
+                <button class="btn btn-primary" @onclick="@(() => DeleteDoctor(b.Id))">Delete</button>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

@@ -62,7 +62,8 @@ namespace MediMatch.Server.Controllers
             var patients = await (from p in _context.Patients
                                     join u in _context.Users on p.ApplicationUserId equals u.Id
                                     join m in _context.Matches on p.ApplicationUserId equals m.PatientId
-                                  where m.DoctorId == user.Id
+                                  where m.DoctorId == user.Id 
+                                    &&m.Accepted == true
                                     select new PatientDto
                                     {
                                         Id = p.ApplicationUserId,

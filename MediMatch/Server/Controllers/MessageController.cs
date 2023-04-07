@@ -42,6 +42,7 @@ namespace MediMatch.Server.Controllers
                 var myUsers = await (from m in _context.Matches
                                      join p in _context.Users on m.PatientId equals p.Id
                                      where m.DoctorId == user.Id
+                                        && m.Accepted == true
                                      orderby p.FirstName
                                      select new ApplicationUserDto
                                      {
@@ -61,6 +62,7 @@ namespace MediMatch.Server.Controllers
                 var myUsers = await (from m in _context.Matches
                                      join p in _context.Users on m.DoctorId equals p.Id
                                      where m.PatientId == user.Id
+                                        && m.Accepted == true
                                      orderby p.FirstName
                                      select new ApplicationUserDto
                                      {
@@ -145,7 +147,13 @@ namespace MediMatch.Server.Controllers
 
             message.MessageDate = DateTime.Now;
             _context.Messages.Add(message);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            } catch (Exception ex)
+            {
+                Console.Write(ex.ToString());
+            }
             return Ok();
         }
 

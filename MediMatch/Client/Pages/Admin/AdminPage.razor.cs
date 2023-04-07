@@ -1,9 +1,10 @@
-﻿using MediMatch.Shared;
+﻿/*
+using MediMatch.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Json;
 
-namespace MediMatch.Client.Pages
+namespace MediMatch.Client.Pages.Admin
 {
     public partial class AdminPage
     {
@@ -42,3 +43,4 @@ namespace MediMatch.Client.Pages
 
     }
 }
+*/

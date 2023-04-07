@@ -448,9 +448,6 @@ namespace MediMatch.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"), 1L, 1);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("MessageDate")
                         .HasColumnType("datetime2");
 
@@ -467,8 +464,6 @@ namespace MediMatch.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MessageId");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Messages");
                 });
@@ -677,13 +672,6 @@ namespace MediMatch.Server.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MediMatch.Shared.Message", b =>
-                {
-                    b.HasOne("MediMatch.Server.Models.ApplicationUser", null)
-                        .WithMany("Messages")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -739,8 +727,6 @@ namespace MediMatch.Server.Migrations
                 {
                     b.Navigation("Doctor")
                         .IsRequired();
-
-                    b.Navigation("Messages");
 
                     b.Navigation("Patient")
                         .IsRequired();

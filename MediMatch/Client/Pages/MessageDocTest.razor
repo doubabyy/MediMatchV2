@@ -32,9 +32,9 @@
             font-weight: bold;
             margin-bottom: 5px;
         }
-
-        .content {
-            margin: 0;
+        
+        .textcontent {
+            margin: 0px;
         }
 
     </style>
@@ -62,9 +62,20 @@
                 </table>
             </div>
 
+            <div class="col-md-8">
+                <h1 class="tight-spacing-below">Messages with @(selectedUser.FirstName + " " + selectedUser.LastName)</h1>
+                <div class="chat">
+                    @foreach (var message in messages)
+                    {
+                        <div class="message">
+                            <p class="sender">@((message.MessageFromID == currentUser.Id) ? currentUser.FirstName : selectedUser.FirstName)</p>
+                            <p class="textcontent">@message.MessageTxt</p>
+                        </div>
+                    }
+                </div>
+            </div>
 
-            <div class="col-md-3">
-
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="newMessage">New message:</label>
                     <textarea class="form-control" @bind="newMessageText" rows="3"></textarea>
@@ -72,50 +83,7 @@
                 <button class="btn btn-primary" @onclick="SendMessage">Send Message</button>
             </div>
 
-            <div class="chat">
-                <div class="message">
-                    <p class="sender">John</p>
-                    <p class="content">Hey, how's it going?</p>
-                </div>
-                <div class="message">
-                    <p class="sender">Jane</p>
-                    <p class="content">Not bad, thanks. How about you?</p>
-                </div>
-                <div class="message">
-                    <p class="sender">John</p>
-                    <p class="content">Pretty good, just busy with work.</p>
-                </div>
-            </div>
 
-
-            <div class="col-md-8">
-                <h1 class="tight-spacing-below">Messages with @(selectedUser.FirstName + " " + selectedUser.LastName)</h1>
-                <div class="chat-box">
-                    <table class="table table-borderless">
-                        <tbody>
-                            @foreach (var message in messages)
-                            {
-                                @if (message.MessageFromID == currentUser.Id)
-                                {
-                                    <tr class="text-right">
-                                        <td class="bg-primary text-white text-right">@message.MessageTxt</td>
-                                        <td>@currentUser.FirstName</td>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td>@selectedUser.FirstName</td>
-                                        <td>@message.MessageTxt</td>
-
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
         </div>
     </div>
 </body>

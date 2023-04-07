@@ -122,7 +122,7 @@ namespace MediMatch.Server.Areas.Identity.Pages.Account
 
                     if (await _userManager.IsInRoleAsync(user, "Admin"))
                     {
-                        return Redirect("~/AdminPage");
+                        return Redirect("~/Admin/AdminPage");
                     } 
                     else if (await _userManager.IsInRoleAsync(user, "Doctor"))
                     {
